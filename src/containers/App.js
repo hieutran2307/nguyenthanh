@@ -25,6 +25,8 @@ import ThemLopHoc from '../components/admin/lophoc/ThemLopHoc';
 import CapNhatLop from '../components/admin/lophoc/CapNhatLop';
 import ThongTinLop from '../components/admin/lophoc/ThongTinLop';
 import DanhSachSinhVienLopHoc from '../components/admin/lophoc/DanhSachSinhVienLopHoc';
+import ThemSVLop from '../components/admin/lophoc/ThemSVLop';
+
 //quan ly lop hoc phan
 import DanhSachLopHocPhan from '../components/admin/lophoc/DanhSachLopHocPhan';
 import ThemLopHocPhan from '../components/admin/lophoc/ThemLopHocPhan';
@@ -167,6 +169,9 @@ const RootStack = createStackNavigator(
   },
   TABLopHoc:{
     screen:TABLopHoc
+  },
+  ThemSVLop:{
+    screen:ThemSVLop
   },
   //quan ly lop hoc phan 
   DanhSachLopHocPhan:{

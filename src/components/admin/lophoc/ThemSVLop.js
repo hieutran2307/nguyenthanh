@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  Button,
-  Image,
-  View,
-  Text,
-  ScrollView,
   StyleSheet,
-  TouchableHighlight,
-  Dimensions,
+  Text,
+  View,
   TouchableOpacity,
-  ImageBackground,
+  Image,
+  Dimensions,
+  Button,
+  TouchableWithoutFeedback,
   FlatList,
+  TextInput,
+  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
@@ -20,20 +20,22 @@ import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 import UserAvatar from 'react-native-user-avatar';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-export default class DanhSachSinhVienLopHoc extends React.Component {
+export default class ThemSVLop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        idlop: this.props.navigation.getParam('idlop'),
+      idlop: this.props.navigation.getParam('idlop'),
       danhsachlop: [],
     };
   }
   componentDidMount() {
-    fetch(`${API_PUBLIC}/kiemtra/danhsachsinhvientheolop.php?idlop=${this.state.idlop}`)
+    fetch(
+      `${API_PUBLIC}/kiemtra/danhsachsinhvientheolop.php?idlop=${this.state.idlop}`,
+    )
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
-            danhsachlop: responseJson,
+          danhsachlop: responseJson,
         });
       })
       .catch((error) => {
@@ -42,17 +44,14 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
   }
   render() {
     const {navigation} = this.props;
-    console.log("get duoc id lop ko ta", this.state.idlop)
+    console.log('get duoc id lop ko ta', this.state.idlop);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Danh sách sinh viên"
+            title="Thêm sinh viên vào lớp"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
-            }}
-            onPressShowMenu={() => {
-              this.props.navigation.navigate('ThemSVLop');
             }}
           />
         </View>
@@ -75,8 +74,6 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
                     <Text style={styles.title}>{item.hovaten}</Text>
                   </View>
                 </View>
-
-           
               </View>
             )}
           />

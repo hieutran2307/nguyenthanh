@@ -64,7 +64,7 @@ export default class ThemLopHoc extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Tạo môn học"
+            title="Tạo lớp học"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
