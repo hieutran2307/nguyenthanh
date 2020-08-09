@@ -20,10 +20,11 @@ import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 import UserAvatar from 'react-native-user-avatar';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-export default class DanhSachLopHoc extends React.Component {
+export default class DanhSachSinhVienLopHoc extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+        idlop: this.props.navigation.getParam('idlop'),
       danhsachlophoc: [],
     };
   }
@@ -41,11 +42,12 @@ export default class DanhSachLopHoc extends React.Component {
   }
   render() {
     const {navigation} = this.props;
+    console.log("get duoc id lop ko ta", this.state.idlop)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Danh sách lớp học"
+            title="Danh sách sinh viên"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}

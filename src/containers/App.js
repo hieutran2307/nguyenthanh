@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Image, View, Text} from 'react-native';
-import {createAppContainer} from 'react-navigation'; // 1.0.0-beta.27
+import {createAppContainer,createMaterialTopTabNavigator} from 'react-navigation'; // 1.0.0-beta.27
 import {createStackNavigator} from 'react-navigation-stack';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,9 +19,12 @@ import ThemMonHoc from '../components/admin/monhoc/ThemMonHoc';
 import CapNhatMonHoc from '../components/admin/monhoc/CapNhatMonHoc';
 import ThongTinMonHoc from '../components/admin/monhoc/ThongTinMonHoc';
 //qua ly lop hoc
+import TuyChonLop from '../components/admin/lophoc/TuyChonLop';
 import DanhSachLopHoc from '../components/admin/lophoc/DanhSachLopHoc';
 import ThemLopHoc from '../components/admin/lophoc/ThemLopHoc';
-
+import CapNhatLop from '../components/admin/lophoc/CapNhatLop';
+import ThongTinLop from '../components/admin/lophoc/ThongTinLop';
+import DanhSachSinhVienLopHoc from '../components/admin/lophoc/DanhSachSinhVienLopHoc';
 //quan ly lop hoc phan
 import DanhSachLopHocPhan from '../components/admin/lophoc/DanhSachLopHocPhan';
 import ThemLopHocPhan from '../components/admin/lophoc/ThemLopHocPhan';
@@ -52,6 +55,70 @@ import HomeSinhVien from '../components/sinhvien/HomeSinhVien';
 import KiemTraCode from '../components/sinhvien/kiemtra/KiemTraCode';
 import BaiKiemTra from '../components/sinhvien//kiemtra/BaiKiemTra';
 
+//tab bottom
+const TabNavigatorLopHoc = createBottomTabNavigator(
+  {
+    
+    HomeApp: {
+      screen: ThongTinLop,
+      navigationOptions: {
+        tabBarLabel: "Tổng quan",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+                source={require("../res/images/tongquan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/tongquan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+    CongDong: {
+      screen: DanhSachSinhVienLopHoc,
+      navigationOptions: {
+        tabBarLabel: "Danh sách sinh viên",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/user_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/user_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: "#4390DF",
+      inactiveTintColor: "#707070",
+      style: {
+        paddingTop: 11,
+        paddingBottom: 10,
+        height: 63,
+      },
+    },
+  }
+);
+const TABLopHoc = createAppContainer(TabNavigatorLopHoc);
+
+
+
+// stack
 const RootStack = createStackNavigator(
   {
     Init: {
@@ -83,11 +150,23 @@ const RootStack = createStackNavigator(
   },
 
   //quan ly lop hoc
+  TuyChonLop:{
+    screen:TuyChonLop
+  },
   DanhSachLopHoc:{
     screen:DanhSachLopHoc
   },
   ThemLopHoc:{
     screen:ThemLopHoc
+  },
+  CapNhatLop:{
+    screen:CapNhatLop
+  },
+  ThongTinLop:{
+    screen:ThongTinLop
+  },
+  TABLopHoc:{
+    screen:TABLopHoc
   },
   //quan ly lop hoc phan 
   DanhSachLopHocPhan:{

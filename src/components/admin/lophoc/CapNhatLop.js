@@ -19,12 +19,13 @@ import Headers from '../../custom/Headers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 
-export default class ThemLopHoc extends React.Component {
+export default class CapNhatLop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tenlop: '',
-      soluong: '',
+      idlop: this.props.navigation.getParam('idlop'),
+      tenlop: this.props.navigation.getParam('tenlop'),
+      soluong: this.props.navigation.getParam('soluongsinhvien'),
     };
   }
   tenlopChange = (value) => {
@@ -32,15 +33,10 @@ export default class ThemLopHoc extends React.Component {
       tenlop: value,
     });
   };
-  soluongChange = (value) => {
-    this.setState({
-      soluong: value,
-    });
-  };
 
   // gui du lieu len server
   async taomonhoc() {
-    fetch(`${API_PUBLIC}/kiemtra/themlophoc.php`, {
+    fetch(`${API_PUBLIC}/kiemtra/capnhatlophoc.php`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -49,22 +45,23 @@ export default class ThemLopHoc extends React.Component {
       body: JSON.stringify({
         tenlop: this.state.tenlop,
         soluong: this.state.soluong,
+        idlop: this.state.idlop,
       }),
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log('data tao lop hoc', responseData);
         if (responseData.statusCode === '200') {
           this.props.navigation.navigate('DanhSachLopHoc');
         }
       });
   }
   render() {
+    console.log('souong', this.state.soluong);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Tạo môn học"
+            title="Cập nhật thông tin môn học"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
@@ -79,7 +76,7 @@ export default class ThemLopHoc extends React.Component {
           <View style={{marginTop: Sizes.s20}}>
             <View style={styles.labelContainer}>
               <Text caption medium style={styles.label}>
-                Tên lớp học
+                Tên lớp
               </Text>
             </View>
             <TextInput
@@ -88,24 +85,10 @@ export default class ThemLopHoc extends React.Component {
               onChangeText={(text) => this.tenlopChange(text)}
             />
           </View>
-
-          <View style={{marginTop: Sizes.s20}}>
-            <View style={styles.labelContainer}>
-              <Text caption medium style={styles.label}>
-                Số sinh viên
-              </Text>
-            </View>
-            <TextInput
-              style={styles.input}
-              value={this.state.soluong}
-              onChangeText={(text) => this.soluongChange(text)}
-            />
-          </View>
         </View>
-
         <View style={{marginBottom: Sizes.s60}}>
           <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
-            <Text style={styles.textbtn}>Tạo mới</Text>
+            <Text style={styles.textbtn}>CẬP NHẠT</Text>
           </TouchableOpacity>
         </View>
       </View>
