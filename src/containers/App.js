@@ -30,6 +30,7 @@ import ThemSVLop from '../components/admin/lophoc/ThemSVLop';
 //quan ly lop hoc phan
 import DanhSachLopHocPhan from '../components/admin/lophoc/DanhSachLopHocPhan';
 import ThemLopHocPhan from '../components/admin/lophoc/ThemLopHocPhan';
+import DanhSachSinhVIenLopHocPhan from '../components/admin/lophoc/DanhSachSinhVIenLopHocPhan';
 
 //quan ly tai khoan
 import TuyChonTaiKhoan from '../components/admin/taikhoan/TuyChonTaiKhoan';
@@ -56,7 +57,7 @@ import ChiTietBaiKiemTra from '../components/giangvien/kiemtra/ChiTietBaiKiemTra
 import HomeSinhVien from '../components/sinhvien/HomeSinhVien';
 import KiemTraCode from '../components/sinhvien/kiemtra/KiemTraCode';
 import BaiKiemTra from '../components/sinhvien//kiemtra/BaiKiemTra';
-
+import ThemSVLopHocPhan from '../components/admin/lophoc/ThemSVLopHocPhan';
 //tab bottom
 const TabNavigatorLopHoc = createBottomTabNavigator(
   {
@@ -96,6 +97,27 @@ const TabNavigatorLopHoc = createBottomTabNavigator(
             ) : (
               <Image
               source={require("../res/images/user_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+    HocPhan: {
+      screen: DanhSachLopHocPhan,
+      navigationOptions: {
+        tabBarLabel: "Lớp học phần",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/hocphan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/hocphan_1.png")}
                 style={{ width: 20, height: 20 }}
               />
             )}
@@ -180,6 +202,9 @@ const RootStack = createStackNavigator(
   ThemLopHocPhan:{
     screen:ThemLopHocPhan
   },
+  DanhSachSinhVIenLopHocPhan:{
+    screen:DanhSachSinhVIenLopHocPhan
+  },
   
   //quan ly tai khoan
   TuyChonTaiKhoan:{
@@ -190,6 +215,9 @@ const RootStack = createStackNavigator(
   },
   DanhSachSinhVien:{
     screen:DanhSachSinhVien
+  },
+  ThemSVLopHocPhan:{
+    screen:ThemSVLopHocPhan
   },
 
   //=========== chuc nang admin end

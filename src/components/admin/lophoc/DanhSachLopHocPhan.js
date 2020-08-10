@@ -41,7 +41,7 @@ export default class DanhSachLopHocPhan extends React.Component {
       });
   }
   render() {
-    console.log('get id lop', this.state.idlop);
+    console.log('thong tin id lop', this.state.idlop);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -85,7 +85,11 @@ export default class DanhSachLopHocPhan extends React.Component {
               data={this.state.danhsachlophoc}
               refreshing={this.state.danhsachlophoc}
               renderItem={({item}) => (
-                <View style={styles.wrapper}>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('DanhSachSinhVIenLopHocPhan',{
+                  idlop:this.state.idlop,
+                  idlophocphan:item.idlophocphan
+                })}>
+    <View style={styles.wrapper}>
                   <Text style={styles.title}>Lớp: {item.tenlop}</Text>
                   <Text style={styles.title}>
                     Lớp học phần: {item.tenhocphan}
@@ -93,6 +97,8 @@ export default class DanhSachLopHocPhan extends React.Component {
                   <Text style={styles.title}>Giáo viên: {item.giaovien}</Text>
                   <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
                 </View>
+                </TouchableOpacity>
+            
               )}
             />
           )}
