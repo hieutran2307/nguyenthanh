@@ -18,33 +18,94 @@ import Headers from '../../custom/Headers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 import UserAvatar from 'react-native-user-avatar';
-import RBSheet from 'react-native-raw-bottom-sheet';
+import { CheckBox, SearchBar } from 'react-native-elements';
 
 export default class ThemSVLop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       idlop: this.props.navigation.getParam('idlop'),
-      danhsachlop: [],
+        loading: false,
+        data: [],
+        checked: [],
+        arrayDetail:[]
     };
+    this.arrayholder = [];
   }
+  checkItem = item => {
+    const { checked } = this.state;
+
+    if (!checked.includes(item)) {
+      this.setState({ checked: [...checked, item],
+            arrayDetail: [{
+          ...checked,
+          "idlop":this.state.idlop,
+          "idthanhvien":item
+        }]
+      });
+    } else {
+      this.setState({ checked: checked.filter(a => a !== item) });
+    }
+};
   componentDidMount() {
-    fetch(
-      `${API_PUBLIC}/kiemtra/danhsachsinhvientheolop.php?idlop=${this.state.idlop}`,
-    )
-      .then((response) => response.json())
-      .then((responseJson) => {
+    this.getData();
+  }
+  getData = () => {
+    const url = `${API_PUBLIC}/kiemtra/danhsachallsinhvien.php`;
+    this.setState({ loading: true });
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((res) => {
+          console.log("dddd", res)
         this.setState({
-          danhsachlop: responseJson,
+          data: res,
+          error: res.error || null,
+          loading: false,
         });
+        this.arrayholder = res;
       })
       .catch((error) => {
-        console.error(error);
+        this.setState({ error, loading: false });
+      });
+  };
+  searchFilterFunction = (text) => {
+    this.setState({
+      value: text,
+    });
+
+    const newData = this.arrayholder.filter((item) => {
+      const itemData = `${item.hovaten.toUpperCase()}`;
+      const textData = text.toUpperCase();
+
+      return itemData.indexOf(textData) > -1;
+    });
+    this.setState({
+      data: newData,
+    });
+  };
+  async taomonhoc() {
+    fetch(`${API_PUBLIC}/kiemtra/themnhieusinhvienvaolop.php`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        arrayDetail: this.state.arrayDetail
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log('tra ve gi day', responseData);
+        if (responseData.statusCode === '200') {
+          this.props.navigation.navigate('CongDong');
+        }
       });
   }
   render() {
     const {navigation} = this.props;
-    console.log('get duoc id lop ko ta', this.state.idlop);
+    console.log('lay dc id lop ko ta', this.state.idlop);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -56,12 +117,21 @@ export default class ThemSVLop extends React.Component {
           />
         </View>
         <View style={{flex: 1}}>
+        <SearchBar
+                        containerStyle={styles.search}
+                        placeholder="Nhập tên sinh viên...."
+                        lightTheme
+                        round
+                        onChangeText={text => this.searchFilterFunction(text)}
+                        autoCorrect={false}
+                        value={this.state.value}
+                    />
           <FlatList
             style={styles.container}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.idlop}
-            data={this.state.danhsachlop}
-            refreshing={this.state.danhsachlop}
+            data={this.state.data}
+            refreshing={this.state.data}
             renderItem={({item, index}) => (
               <View style={styles.wrapper}>
                 <View style={{flex: 1}}>
@@ -74,10 +144,25 @@ export default class ThemSVLop extends React.Component {
                     <Text style={styles.title}>{item.hovaten}</Text>
                   </View>
                 </View>
+                <View>
+                <CheckBox
+                            
+                            onPress={() => this.checkItem(item.idthanhvien)}
+                            checked={this.state.checked.includes(item.idthanhvien)}
+                            />
+                  </View>
+
               </View>
+             
             )}
           />
         </View>
+        <View style={{  flex:1/9}}>
+        <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
+            <Text style={styles.textbtn}>Tạo mới</Text>
+          </TouchableOpacity>
+
+</View>
       </View>
     );
   }
@@ -107,4 +192,22 @@ const styles = StyleSheet.create({
     marginHorizontal: Sizes.s30,
     marginTop: Sizes.s10,
   },
+    search: {
+        marginTop: Sizes.s10,
+        backgroundColor: '#FFFF',
+        borderBottomColor: '#FFFF',
+        borderTopColor: '#FFFF',
+    },
+    btn: {
+      height: Sizes.s80,
+      backgroundColor: '#f06c5b',
+      marginHorizontal: Sizes.s30,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: Sizes.s20,
+    },
+    textbtn: {
+      fontSize: Sizes.s50,
+      color: '#FFFF',
+    },
 });

@@ -52,7 +52,9 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
               this.props.navigation.goBack('');
             }}
             onPressShowMenu={() => {
-              this.props.navigation.navigate('ThemSVLop');
+              this.props.navigation.navigate('ThemSVLop',{
+                idlop:this.state.idlop
+              });
             }}
           />
         </View>
@@ -60,7 +62,7 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
           <FlatList
             style={styles.container}
             showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.idlop}
+            keyExtractor={(item) => item.idthanhvien}
             data={this.state.danhsachlop}
             refreshing={this.state.danhsachlop}
             renderItem={({item, index}) => (
