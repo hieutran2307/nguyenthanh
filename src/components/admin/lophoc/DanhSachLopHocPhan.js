@@ -23,6 +23,7 @@ export default class DanhSachLopHocPhan extends React.Component {
     super(props);
     this.state = {
       idlop: this.props.navigation.getParam('idlop'),
+      tenlop: this.props.navigation.getParam('tenlop'),
     };
   }
   componentDidMount() {
@@ -41,7 +42,8 @@ export default class DanhSachLopHocPhan extends React.Component {
       });
   }
   render() {
-    console.log('thong tin id lop', this.state.idlop);
+    console.log('thong tin id lop ben lop hoc phan', this.state.idlop);
+    console.log("ten lop", this.state.tenlop)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -52,7 +54,9 @@ export default class DanhSachLopHocPhan extends React.Component {
             }}
             onPressShowMenu={() => {
               this.props.navigation.navigate('ThemLopHocPhan',{
-                id:this.state.idlop,
+                idlop:this.state.idlop,
+                tenlop:this.state.tenlop
+
               })
             }}
           />
@@ -73,6 +77,7 @@ export default class DanhSachLopHocPhan extends React.Component {
                 onPress={() =>
                   this.props.navigation.navigate('ThemLopHocPhan',{
                     id:this.state.idlop,
+                    tenlop:this.state.tenlop
                   })
                 }>
                 <Text style={styles.txtbtn}>TẠO LỚP HỌC PHẦN</Text>
@@ -80,7 +85,7 @@ export default class DanhSachLopHocPhan extends React.Component {
             </View>
           ) : (
             <FlatList
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.idlop}
               style={styles.container}
               data={this.state.danhsachlophoc}
               refreshing={this.state.danhsachlophoc}
