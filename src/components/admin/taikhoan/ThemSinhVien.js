@@ -19,7 +19,7 @@ import {CheckBox, SearchBar} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 
-export default class ThemGiangVien extends React.Component {
+export default class ThemSinhVien extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -92,7 +92,7 @@ export default class ThemGiangVien extends React.Component {
         email: this.state.email,
         maso: this.state.maso,
         matkhau: this.state.matkhau,
-        idnhom: 2,
+        idnhom: 3,
         hinhanh: '',
         idlop: '',
         idlophocphan: '',
@@ -102,7 +102,7 @@ export default class ThemGiangVien extends React.Component {
       .then((responseData) => {
         console.log('data tra ve', responseData);
         if (responseData.statusCode === '200') {
-          this.props.navigation.navigate('DanhSachGiangVien');
+          this.props.navigation.navigate('DanhSachSinhVien');
         }
       });
   }
@@ -111,7 +111,7 @@ export default class ThemGiangVien extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Thêm giảng viên"
+            title="Thêm sinh viên"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
@@ -192,7 +192,7 @@ export default class ThemGiangVien extends React.Component {
               <View style={{marginTop: Sizes.s20}}>
                 <View style={styles.labelContainer}>
                   <Text caption medium style={styles.label}>
-                    Mã số giảng viên
+                    Mã số sinh viên
                   </Text>
                 </View>
                 <TextInput

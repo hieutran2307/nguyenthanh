@@ -37,6 +37,7 @@ import TuyChonTaiKhoan from '../components/admin/taikhoan/TuyChonTaiKhoan';
 import DanhSachGiangVien from '../components/admin/taikhoan/DanhSachGiangVien';
 import DanhSachSinhVien from '../components/admin/taikhoan/DanhSachSinhVien';
 import ThemGiangVien from '../components/admin/taikhoan/ThemGiangVien';
+import ThemSinhVien from '../components/admin/taikhoan/ThemSinhVien';
 // =========== chuc nang admin end ===============
 
 /// ================chuc nang giang vien ==============================///
@@ -219,6 +220,9 @@ const RootStack = createStackNavigator(
   },
   ThemGiangVien:{
     screen:ThemGiangVien
+  },
+  ThemSinhVien:{
+    screen:ThemSinhVien
   },
   ThemSVLopHocPhan:{
     screen:ThemSVLopHocPhan

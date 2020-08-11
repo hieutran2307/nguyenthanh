@@ -74,7 +74,7 @@ export default class DanhSachGiangVien extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Thêm sinh viên vào lớp"
+            title="Danh sách giảng viên"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
