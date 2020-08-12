@@ -18,12 +18,15 @@ import Headers from '../../custom/Headers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 import {userProfile} from '../../../config/settings';
+import UserAvatar from 'react-native-user-avatar';
+import RBSheet from 'react-native-raw-bottom-sheet';
 
 export default class GVDanhSachMonHoc extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      danhsachmonhoc: [],
+      listkhoahoc: [],
+      refreshing: false,
     };
   }
   componentDidMount() {
@@ -33,20 +36,26 @@ export default class GVDanhSachMonHoc extends React.Component {
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
-          danhsachmonhoc: responseJson,
+          listkhoahoc: responseJson,
         });
       })
       .catch((error) => {
         console.error(error);
       });
   }
+  togglePanel() {
+    this.setState({
+      isOpen: true,
+    });
+  }
+
   render() {
-    const {navigation} = this.props;
+    console.log('data', this.state.listkhoahoc);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Danh sách môn học"
+            title="Danh sách môn học phần"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
@@ -54,25 +63,97 @@ export default class GVDanhSachMonHoc extends React.Component {
         </View>
         <View style={{flex: 1}}>
           <FlatList
-            keyExtractor={(item) => item.idmonhoc}
             style={styles.container}
-            data={this.state.danhsachmonhoc}
-            refreshing={this.state.danhsachmonhoc}
-            renderItem={({item}) => (
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.navigate('GVDanhSachLopHocPhan', {
-                    idmonhoc:item.idmonhoc
-                  })
-                }>
-                <View style={styles.wrapper}>
-                  <Text style={styles.title}>
-                    Tên môn học: {item.tenmonhoc}
-                  </Text>
-                  <Text style={styles.title}>Số tín chỉ: {item.sotinchi}</Text>
-                  <Text style={styles.title}>Sốt tiết: {item.sotiet}</Text>
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => item.idmonhoc}
+            data={this.state.listkhoahoc}
+            refreshing={this.state.listkhoahoc}
+            extraData={this.state.listkhoahoc}
+            renderItem={({item, index}) => (
+              <View style={styles.wrapper}>
+                <View style={{flex: 1}}>
+                  <View style={{marginRight: Sizes.s50, flexDirection: 'row'}}>
+                    <UserAvatar
+                      style={{width: Sizes.s140, height: Sizes.s140}}
+                      name={item.tenmonhoc}
+                      bgColors={['#3498db', '#34495e', '#e67e22']}
+                    />
+                    <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
+                  </View>
                 </View>
-              </TouchableOpacity>
+
+                <View>
+                  <TouchableOpacity
+                    //onPress={() => this.RBSheet.open()}
+
+                    onPress={() => this[RBSheet + index].open()}>
+                    <Image
+                      source={require('../../../res/images/ic_private_edit.png')}
+                      style={{
+                        height: Sizes.s70,
+                        width: Sizes.s70,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </TouchableOpacity>
+                  {/* bottom sheet */}
+                  <View>
+                    <RBSheet
+                      // ref={(ref, item) => {
+                      //   this.RBSheet = ref;
+                      // }}
+                      ref={(ref) => {
+                        this[RBSheet + index] = ref;
+                      }}
+                      height={Sizes.s340}
+                      openDuration={Sizes.s260}
+                      customStyles={{
+                        container: {
+                          marginTop: Sizes.s40,
+                        },
+                      }}>
+                      <View
+                        style={{
+                          marginTop: Sizes.s40,
+                          marginHorizontal: Sizes.s30,
+                        }}>
+                        <TouchableOpacity
+                          onPress={() =>
+                            this.props.navigation.navigate('GVThongTinMonHoc', {
+                              idmonhoc: item.idmonhoc,
+                              tenmonhoc: item.tenmonhoc,
+                              sotinchi: item.sotinchi,
+                              sotiet: item.sotiet,
+                            })
+                          }>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              marginTop: Sizes.s40,
+                            }}>
+                            <Image
+                              source={require('../../../res/images/infos.png')}
+                              style={{
+                                height: Sizes.s70,
+                                width: Sizes.s70,
+                                resizeMode: 'contain',
+                              }}
+                            />
+                            <Text
+                              style={{
+                                marginTop: Sizes.s10,
+                                marginLeft: Sizes.s10,
+                                fontSize: Sizes.s40,
+                              }}>
+                              Thông tin môn học
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </RBSheet>
+                  </View>
+                </View>
+              </View>
             )}
           />
         </View>
@@ -92,12 +173,13 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     width: width - 20,
-    backgroundColor: '#edf7ff',
+    //backgroundColor: '#edf7ff',
     margin: 10,
     shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.2,
     padding: 10,
     paddingTop: 0,
+    flexDirection: 'row',
   },
   title: {
     fontSize: Sizes.s40,

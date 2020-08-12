@@ -87,7 +87,7 @@ export default class DanhSachGiangVien extends React.Component {
         <View style={{flex: 1}}>
           <SearchBar
             containerStyle={styles.search}
-            placeholder="Nhập tên sinh viên...."
+            placeholder="Nhập tên giảng viên...."
             lightTheme
             round
             onChangeText={(text) => this.searchFilterFunction(text)}
@@ -112,7 +112,76 @@ export default class DanhSachGiangVien extends React.Component {
                     <Text style={styles.title}>{item.name}</Text>
                   </View>
                 </View>
-                <View></View>
+                <View>
+                  <TouchableOpacity
+                    onPress={() => this[RBSheet + index].open()}>
+                    <Image
+                      source={require('../../../res/images/ic_private_edit.png')}
+                      style={{
+                        height: Sizes.s70,
+                        width: Sizes.s70,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </TouchableOpacity>
+                  {/* bottom sheet */}
+                  <View>
+                    <RBSheet
+                      ref={(ref) => {
+                        this[RBSheet + index] = ref;
+                      }}
+                      height={Sizes.s340}
+                      openDuration={Sizes.s260}
+                      customStyles={{
+                        container: {
+                          marginTop: Sizes.s40,
+                        },
+                      }}>
+                      <View
+                        style={{
+                          marginTop: Sizes.s40,
+                          marginHorizontal: Sizes.s30,
+                        }}>
+                        
+                        <TouchableOpacity
+                          onPress={() =>
+                            this.props.navigation.navigate('TABThongTinGV', {
+                              idgv:item.id,
+                              ngaysinh:item.ngaysinh,
+                              diachi:item.diachi,
+                              sodienthoai:item.sodienthoai,
+                              email:item.email,
+                              tengv:item.name,
+                              maso:item.maso
+                            })
+                          }>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              marginTop: Sizes.s40,
+                            }}>
+                            <Image
+                              source={require('../../../res/images/infos.png')}
+                              style={{
+                                height: Sizes.s70,
+                                width: Sizes.s70,
+                                resizeMode: 'contain',
+                              }}
+                            />
+                            <Text
+                              style={{
+                                marginTop: Sizes.s10,
+                                marginLeft: Sizes.s10,
+                                fontSize: Sizes.s40,
+                              }}>
+                              Thông tin giảng viên
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </RBSheet>
+                  </View>
+                </View>
               </View>
             )}
           />

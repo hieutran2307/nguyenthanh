@@ -38,6 +38,9 @@ import DanhSachGiangVien from '../components/admin/taikhoan/DanhSachGiangVien';
 import DanhSachSinhVien from '../components/admin/taikhoan/DanhSachSinhVien';
 import ThemGiangVien from '../components/admin/taikhoan/ThemGiangVien';
 import ThemSinhVien from '../components/admin/taikhoan/ThemSinhVien';
+import ThongTinGiangVien from '../components/admin/taikhoan/ThongTinGiangVien';
+import DanhSachMonHocTheoGV from '../components/admin/taikhoan/DanhSachMonHocTheoGV';
+import ThemMonHocGV from '../components/admin/taikhoan/ThemMonHocGV';
 // =========== chuc nang admin end ===============
 
 /// ================chuc nang giang vien ==============================///
@@ -49,6 +52,7 @@ import GVDanhSachChuDe from '../components/giangvien/monhoc/GVDanhSachChuDe';
 import TaoChuDe from '../components/giangvien/monhoc/TaoChuDe';
 import GVDanhSachCauHoi from '../components/giangvien/monhoc/GVDanhSachCauHoi';
 import TaoCauHoi from '../components/giangvien/monhoc/TaoCauHoi';
+import GVThongTinMonHoc from '../components/giangvien/monhoc/GVThongTinMonHoc';
 
 // tạo bài kiểm tra
 import DanhSachKiemTra from '../components/giangvien/taokiemtra/DanhSachKiemTra';
@@ -142,7 +146,129 @@ const TabNavigatorLopHoc = createBottomTabNavigator(
 );
 const TABLopHoc = createAppContainer(TabNavigatorLopHoc);
 
+//tab navigation giang vien
+const TabNavigatorGvMonHoc = createBottomTabNavigator(
+  {
+    
+    HomeApp: {
+      screen: GVThongTinMonHoc,
+      navigationOptions: {
+        tabBarLabel: "Tổng quan",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+                source={require("../res/images/tongquan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/tongquan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+ 
+    ChuDe: {
+      screen: GVDanhSachChuDe,
+      navigationOptions: {
+        tabBarLabel: "Chủ đề",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/hocphan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/hocphan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: "#4390DF",
+      inactiveTintColor: "#707070",
+      style: {
+        paddingTop: 11,
+        paddingBottom: 10,
+        height: 63,
+      },
+    },
+  }
+);
+const TABGvMonHoc = createAppContainer(TabNavigatorGvMonHoc);
 
+// tab thông tin giảng viên
+const TabThongTinGiangVien = createBottomTabNavigator(
+  {
+    
+    HomeApp: {
+      screen: ThongTinGiangVien,
+      navigationOptions: {
+        tabBarLabel: "Tổng quan",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+                source={require("../res/images/tongquan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/tongquan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+ 
+    ChuDe: {
+      screen: DanhSachMonHocTheoGV,
+      navigationOptions: {
+        tabBarLabel: "Môn học",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/hocphan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/hocphan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: "#4390DF",
+      inactiveTintColor: "#707070",
+      style: {
+        paddingTop: 11,
+        paddingBottom: 10,
+        height: 63,
+      },
+    },
+  }
+);
+const TABThongTinGV = createAppContainer(TabThongTinGiangVien)
 
 // stack
 const RootStack = createStackNavigator(
@@ -227,6 +353,12 @@ const RootStack = createStackNavigator(
   ThemSVLopHocPhan:{
     screen:ThemSVLopHocPhan
   },
+  GVThongTinMonHoc:{
+    screen:TABGvMonHoc
+  },
+  ThemMonHocGV:{
+    screen:ThemMonHocGV
+  },
 
   //=========== chuc nang admin end
     
@@ -261,6 +393,9 @@ const RootStack = createStackNavigator(
   },
   ChiTietBaiKiemTra:{
     screen:ChiTietBaiKiemTra
+  },
+  TABThongTinGV:{
+    screen:TABThongTinGV
   },
 
   // chuc nang giang vien end =======================//
