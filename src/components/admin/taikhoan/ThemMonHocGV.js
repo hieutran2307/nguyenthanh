@@ -18,17 +18,20 @@ import Headers from '../../custom/Headers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 import UserAvatar from 'react-native-user-avatar';
-import { CheckBox, SearchBar } from 'react-native-elements';
+import {CheckBox, SearchBar} from 'react-native-elements';
+import {userProfile} from '../../../config/settings';
 
 export default class ThemMonHocGV extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       idlop: this.props.navigation.getParam('idlop'),
-        loading: false,
-        data: [],
-        checked: [],
-        arrayDetail:[]
+      loading: false,
+      data: [],
+      checked: [],
+      arrayDetail: [],
+      idmonhoc: '',
+      idgv: this.props.navigation.getParam('idgv'),
     };
     this.arrayholder = [];
   }
@@ -39,8 +42,8 @@ export default class ThemMonHocGV extends React.Component {
       this.setState({ checked: [...checked, item],
             arrayDetail: [{
           ...checked,
-          "idlop":this.state.idlop,
-          "idthanhvien":item
+          "idmonhoc":item,
+          "idthanhvien":this.state.idgv
         }]
       });
     } else {
@@ -51,13 +54,12 @@ export default class ThemMonHocGV extends React.Component {
     this.getData();
   }
   getData = () => {
-    const url = `${API_PUBLIC}/kiemtra/danhsachallsinhvien.php`;
-    this.setState({ loading: true });
+    const url = `${API_PUBLIC}/kiemtra/danhsachallmonhoc.php`;
+    this.setState({loading: true});
 
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-          console.log("dddd", res)
         this.setState({
           data: res,
           error: res.error || null,
@@ -66,7 +68,7 @@ export default class ThemMonHocGV extends React.Component {
         this.arrayholder = res;
       })
       .catch((error) => {
-        this.setState({ error, loading: false });
+        this.setState({error, loading: false});
       });
   };
   searchFilterFunction = (text) => {
@@ -75,7 +77,7 @@ export default class ThemMonHocGV extends React.Component {
     });
 
     const newData = this.arrayholder.filter((item) => {
-      const itemData = `${item.hovaten.toUpperCase()}`;
+      const itemData = `${item.name.toUpperCase()}`;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -85,51 +87,51 @@ export default class ThemMonHocGV extends React.Component {
     });
   };
   async taomonhoc() {
-    fetch(`${API_PUBLIC}/kiemtra/themnhieusinhvienvaolop.php`, {
+    fetch(`${API_PUBLIC}/kiemtra/themnhieumonhocgv.php`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        arrayDetail: this.state.arrayDetail
+        arrayDetail: this.state.arrayDetail,
       }),
     })
       .then((response) => response.json())
       .then((responseData) => {
         console.log('tra ve gi day', responseData);
         if (responseData.statusCode === '200') {
-          this.props.navigation.navigate('CongDong');
+          this.props.navigation.navigate('tabDanhSachMonHocTheoGV');
         }
       });
   }
   render() {
     const {navigation} = this.props;
-    console.log('lay dc id lop ko ta', this.state.idlop);
+    console.log('lay dc id mon hoc ko', this.state.arrayDetail);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Thêm sinh viên vào lớp"
+            title="Danh sách môn học"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
           />
         </View>
         <View style={{flex: 1}}>
-        <SearchBar
-                        containerStyle={styles.search}
-                        placeholder="Nhập tên sinh viên...."
-                        lightTheme
-                        round
-                        onChangeText={text => this.searchFilterFunction(text)}
-                        autoCorrect={false}
-                        value={this.state.value}
-                    />
+          <SearchBar
+            containerStyle={styles.search}
+            placeholder="Nhập tên môn học...."
+            lightTheme
+            round
+            onChangeText={(text) => this.searchFilterFunction(text)}
+            autoCorrect={false}
+            value={this.state.value}
+          />
           <FlatList
             style={styles.container}
             showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.idlop}
+            keyExtractor={(item) => item.id}
             data={this.state.data}
             refreshing={this.state.data}
             renderItem={({item, index}) => (
@@ -138,31 +140,27 @@ export default class ThemMonHocGV extends React.Component {
                   <View style={{marginRight: Sizes.s50, flexDirection: 'row'}}>
                     <UserAvatar
                       size={Sizes.s100}
-                      name={item.hovaten}
+                      name={item.name}
                       bgColors={['#3498db', '#34495e', '#e67e22']}
                     />
-                    <Text style={styles.title}>{item.hovaten}</Text>
+                    <Text style={styles.title}>{item.name}</Text>
                   </View>
                 </View>
                 <View>
-                <CheckBox
-                            
-                            onPress={() => this.checkItem(item.idthanhvien)}
-                            checked={this.state.checked.includes(item.idthanhvien)}
-                            />
-                  </View>
-
+                  <CheckBox
+                    onPress={() => this.checkItem(item.id)}
+                    checked={this.state.checked.includes(item.id)}
+                  />
+                </View>
               </View>
-             
             )}
           />
         </View>
-        <View style={{  flex:1/9}}>
-        <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
-            <Text style={styles.textbtn}>Tạo mới</Text>
+        <View style={{flex: 1 / 9}}>
+          <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
+            <Text style={styles.textbtn}>Cập nhật</Text>
           </TouchableOpacity>
-
-</View>
+        </View>
       </View>
     );
   }
@@ -192,22 +190,22 @@ const styles = StyleSheet.create({
     marginHorizontal: Sizes.s30,
     marginTop: Sizes.s10,
   },
-    search: {
-        marginTop: Sizes.s10,
-        backgroundColor: '#FFFF',
-        borderBottomColor: '#FFFF',
-        borderTopColor: '#FFFF',
-    },
-    btn: {
-      height: Sizes.s80,
-      backgroundColor: '#f06c5b',
-      marginHorizontal: Sizes.s30,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: Sizes.s20,
-    },
-    textbtn: {
-      fontSize: Sizes.s50,
-      color: '#FFFF',
-    },
+  search: {
+    marginTop: Sizes.s10,
+    backgroundColor: '#FFFF',
+    borderBottomColor: '#FFFF',
+    borderTopColor: '#FFFF',
+  },
+  btn: {
+    height: Sizes.s80,
+    backgroundColor: '#f06c5b',
+    marginHorizontal: Sizes.s30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Sizes.s20,
+  },
+  textbtn: {
+    fontSize: Sizes.s50,
+    color: '#FFFF',
+  },
 });

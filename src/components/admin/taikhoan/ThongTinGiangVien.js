@@ -35,7 +35,7 @@ export default class ThongTinGiangVien extends React.Component {
     };
   }
   render() {
-    console.log('data', this.state.listkhoahoc);
+    console.log('id giang vien', this.state.idgv);
     return (
       <View style={styles.container}>
         <View style={styles.header}>

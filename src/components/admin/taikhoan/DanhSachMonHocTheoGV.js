@@ -61,7 +61,9 @@ export default class DanhSachMonHocTheoGV extends React.Component {
             
             
             onPressShowMenu={() => {
-                this.props.navigation.navigate('ThemMonHocGV');
+                this.props.navigation.navigate('ThemMonHocGV',{
+                  idgv:this.state.idgv
+                });
               }}
           />
         </View>

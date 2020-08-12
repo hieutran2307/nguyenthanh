@@ -234,7 +234,7 @@ const TabThongTinGiangVien = createBottomTabNavigator(
       },
     },
  
-    ChuDe: {
+    tabDanhSachMonHocTheoGV: {
       screen: DanhSachMonHocTheoGV,
       navigationOptions: {
         tabBarLabel: "Môn học",
