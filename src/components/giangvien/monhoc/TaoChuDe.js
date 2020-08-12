@@ -17,14 +17,14 @@ import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
 import Headers from '../../custom/Headers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
+import {userProfile, API_PUBLIC} from '../../../config/settings';
 
 export default class TaoChuDe extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tenchude: '',
-      idlophocphans: this.props.navigation.getParam('idlophocphans'),
+      idmonhoc: this.props.navigation.getParam('idmonhoc'),
     };
   }
   tenchudeChange = (value) => {
@@ -43,19 +43,20 @@ export default class TaoChuDe extends React.Component {
       },
       body: JSON.stringify({
         tenchude: this.state.tenchude,
-        idlophocphan: this.state.idlophocphans,
+        idmonhoc: this.state.idmonhoc,
+        idthanhvien:userProfile.data.idthanhvien
       }),
     })
       .then((response) => response.json())
       .then((responseData) => {
         console.log('data tao lop hoc', responseData);
         if (responseData.statusCode === '200') {
-          this.props.navigation.navigate('GVDanhSachChuDe');
+          this.props.navigation.navigate('HomeAppThongtinMonHocGV');
         }
       });
   }
   render() {
-      console.log("id hoc phan aaaaaa", this.state.idlophocphans)
+      console.log("id thanh vien", userProfile.data.idthanhvien)
     return (
       <View style={styles.container}>
         <View style={styles.header}>

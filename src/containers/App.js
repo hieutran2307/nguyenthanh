@@ -150,7 +150,7 @@ const TABLopHoc = createAppContainer(TabNavigatorLopHoc);
 const TabNavigatorGvMonHoc = createBottomTabNavigator(
   {
     
-    HomeApp: {
+    HomeAppThongtinMonHocGV: {
       screen: GVThongTinMonHoc,
       navigationOptions: {
         tabBarLabel: "Tổng quan",

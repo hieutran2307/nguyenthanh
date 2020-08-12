@@ -55,7 +55,7 @@ export default class GVDanhSachMonHoc extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Danh sách môn học phần"
+            title="Danh sách môn học"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
