@@ -109,7 +109,7 @@ export default class HomeGiangVien extends React.Component {
                         style={styles.imageBoxChucNang}
                       />
                     </View>
-                    <Text style={styles.textchucnang}> Tạo kiểm tra</Text>
+                    <Text style={styles.textchucnang}>Tạo câu hỏi</Text>
                   </View>
                 </View>
               </TouchableOpacity>
