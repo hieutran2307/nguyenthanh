@@ -36,7 +36,7 @@ export default class KiemTraCode extends React.Component {
 
   // gui du lieu len server
   async taomonhoc() {
-    fetch(`${API_PUBLIC}/kiemtra/kiemtra.php`, {
+    fetch(`${API_PUBLIC}/thi/kiemtramacode.php`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -48,11 +48,10 @@ export default class KiemTraCode extends React.Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log('data tao lop hoc', responseData);
+        console.log("ma kiem tra tra ve",responseData.user.makiemtra)
         if (responseData.statusCode === '200') {
           this.props.navigation.navigate('BaiKiemTra',{
-            idkiemtra:responseData.user.idkiemtra,
-            tenbaikiemtra:responseData.user.tenbaikiemtra
+            makiemtra:responseData.user.makiemtra,
           });
         } else{
             Alert.alert(

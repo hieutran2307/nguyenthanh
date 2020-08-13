@@ -169,9 +169,9 @@ export default class DanhSachKiemTra extends React.Component {
       .then((response) => response.json())
       .then((responseData) => {
         console.log("data tra ve gi day", responseData)
-        // if (responseData.statusCode === '200') {
-        //   this.props.navigation.navigate('GVDanhSachCauHoi');
-        // }
+        if (responseData.statusCode === '200') {
+          this.props.navigation.navigate('GVDanhSachCauHoi');
+        }
       });
   }
   render() {
