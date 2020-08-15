@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 import UserAvatar from 'react-native-user-avatar';
 import {CheckBox, SearchBar} from 'react-native-elements';
+import MultiSelect from 'react-native-multiple-select';
 
 export default class BaiKiemTra extends React.Component {
   constructor(props) {
@@ -28,24 +29,88 @@ export default class BaiKiemTra extends React.Component {
     this.state = {
       makiemtra: this.props.navigation.getParam('makiemtra'),
       thongtibaikiemtra: [],
-      checked: [],
-      dapan: '',
-      ketqua: '',
       danhsachcauhoi: [],
+      dapan: '',
+      diemso: 0,
+      checkeda: [],
+      checkedb: [],
+      checkedc: [],
+      checkedd: [],
+      idcauhoi: '',
+      point: 0,
     };
-    this.arrdapan = [];
   }
-  checkarrdapan = (item) => {
-    const {checked} = this.state;
-
-    if (!checked.includes(item)) {
+  checkItemketquaa = (item) => {
+    const {checkeda} = this.state;
+    if ((this.state.dapanhchon = this.state.ketqua)) {
       this.setState({
-        checked: [...checked, item],
-        idmonhoc: item,
-        tenmonhoc: tenmonhoc,
+        point: this.state.point + 1,
+      });
+    }
+    if (!checkeda.includes(item)) {
+      this.setState({
+        checkeda: [...checkeda, item],
+        idcauhoi: item,
+        dapanhchon: dapanhchon,
+        ketqua: ketqua,
       });
     } else {
-      this.setState({checked: checked.filter((a) => a !== item)});
+      this.setState({checkeda: checkeda.filter((a) => a !== item)});
+    }
+  };
+
+  checkItemketquab = (item) => {
+    const {checkedb} = this.state;
+    if ((this.state.dapanhchon = this.state.ketqua)) {
+      this.setState({
+        point: this.state.point + 1,
+      });
+    }
+    if (!checkedb.includes(item)) {
+      this.setState({
+        checkedb: [...checkedb, item],
+        idcauhoi: item,
+        dapanhchon: dapanhchon,
+        ketqua: ketqua,
+      });
+    } else {
+      this.setState({checkedb: checkedb.filter((a) => a !== item)});
+    }
+  };
+  checkItemketquac = (item) => {
+    const {checkedc} = this.state;
+    if ((this.state.dapanhchon = this.state.ketqua)) {
+      this.setState({
+        point: this.state.point + 1,
+      });
+    }
+    if (!checkedc.includes(item)) {
+      this.setState({
+        checkedc: [...checkedc, item],
+        idcauhoi: item,
+        dapanhchon: dapanhchon,
+        ketqua: ketqua,
+      });
+    } else {
+      this.setState({checkedc: checkedc.filter((a) => a !== item)});
+    }
+  };
+  checkItemketquad = (item) => {
+    const {checkedd} = this.state;
+    if ((this.state.dapanhchon = this.state.ketqua)) {
+      this.setState({
+        point: this.state.point + 1,
+      });
+    }
+    if (!checkedd.includes(item)) {
+      this.setState({
+        checkedd: [...checkedd, item],
+        idcauhoi: item,
+        dapanhchon: dapanhchon,
+        ketqua: ketqua,
+      });
+    } else {
+      this.setState({checkedd: checkedd.filter((a) => a !== item)});
     }
   };
 
@@ -63,6 +128,7 @@ export default class BaiKiemTra extends React.Component {
       });
     this.getData();
   }
+
   getData = () => {
     const url = `${API_PUBLIC}/thi/chitietbaithi.php?makiemtra=${this.state.makiemtra}`;
     this.setState({loading: true});
@@ -70,7 +136,6 @@ export default class BaiKiemTra extends React.Component {
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-        console.log('danh sach cau hoi', res);
         this.setState({
           danhsachcauhoi: res,
           error: res.error || null,
@@ -82,9 +147,17 @@ export default class BaiKiemTra extends React.Component {
         this.setState({error, loading: false});
       });
   };
-
+  handleChange(e) {
+    let isChecked = e.target.checked;
+    // do whatever you want with isChecked value
+    alert('dấd');
+  }
   render() {
-    console.log('dap an chon lua', this.state.dapan);
+    console.log('diem so ', this.state.point);
+    console.log('dap an chon duoc', this.state.dapanhchon);
+
+    console.log('ket qua cau hoi', this.state.ketqua);
+    console.log('diem so', this.state.point);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -132,49 +205,110 @@ export default class BaiKiemTra extends React.Component {
                 }}>
                 <Text style={{fontSize: Sizes.s40}}>Câu hỏi</Text>
 
-              <Text style={{marginTop: Sizes.s30}}>{item.tencauhoi}</Text>
+                <Text style={{marginTop: Sizes.s30}}>{item.tencauhoi}</Text>
 
                 <View style={styles.dapan}>
                   <View style={styles.wrapper}>
                     <CheckBox
-                      onPress={() => this.checkarrdapan((dapan = item.a))}
-                      checked={this.state.checked.includes((dapan = item.a))}
+                      onPress={() =>
+                        this.checkItemketquaa(
+                          item.idcauhoi,
+                          (dapanhchon = item.a),
+                          (ketqua = item.dapan),
+                        )
+                      }
+                      checked={this.state.checkeda.includes(
+                        item.idcauhoi,
+                        (dapanhchon = item.a),
+                        (ketqua = item.dapan),
+                      )}
                     />
-                    <Text style={{fontSize: Sizes.s40, marginTop: Sizes.s20}}>
-                    {item.a}
+
+                    <Text
+                      style={{
+                        fontSize: Sizes.s40,
+                        marginTop: Sizes.s10,
+                        marginLeft: Sizes.s20,
+                      }}>
+                      {item.a}
                     </Text>
                   </View>
                 </View>
                 <View style={styles.dapan}>
                   <View style={styles.wrapper}>
                     <CheckBox
-                      onPress={() => this.checkarrdapan((dapan = item.a))}
-                      checked={this.state.checked.includes((dapan = item.a))}
+                      onPress={() =>
+                        this.checkItemketquab(
+                          item.idcauhoi,
+                          (dapanhchon = item.b),
+                          (ketqua = item.dapan),
+                        )
+                      }
+                      checked={this.state.checkedb.includes(
+                        item.idcauhoi,
+                        (dapanhchon = item.b),
+                        (ketqua = item.dapan),
+                      )}
                     />
-                    <Text style={{fontSize: Sizes.s40, marginTop: Sizes.s20}}>
-                    {item.b}
+                    <Text
+                      style={{
+                        fontSize: Sizes.s40,
+                        marginTop: Sizes.s10,
+                        marginLeft: Sizes.s20,
+                      }}>
+                      {item.b}
                     </Text>
                   </View>
                 </View>
                 <View style={styles.dapan}>
                   <View style={styles.wrapper}>
                     <CheckBox
-                      onPress={() => this.checkarrdapan((dapan = item.a))}
-                      checked={this.state.checked.includes((dapan = item.a))}
+                      onPress={() =>
+                        this.checkItemketquac(
+                          item.idcauhoi,
+                          (dapanhchon = item.c),
+                          (ketqua = item.dapan),
+                        )
+                      }
+                      checked={this.state.checkedc.includes(
+                        item.idcauhoi,
+                        (dapanhchon = item.c),
+                        (ketqua = item.dapan),
+                      )}
                     />
-                    <Text style={{fontSize: Sizes.s40, marginTop: Sizes.s20}}>
-                    {item.c}
+                    <Text
+                      style={{
+                        fontSize: Sizes.s40,
+                        marginTop: Sizes.s10,
+                        marginLeft: Sizes.s20,
+                      }}>
+                      {item.c}
                     </Text>
                   </View>
                 </View>
                 <View style={styles.dapan}>
                   <View style={styles.wrapper}>
                     <CheckBox
-                      onPress={() => this.checkarrdapan((dapan = item.a))}
-                      checked={this.state.checked.includes((dapan = item.a))}
+                      onPress={() =>
+                        this.checkItemketquad(
+                          item.idcauhoi,
+                          (dapanhchon = item.d),
+                          (ketqua = item.dapan),
+                        )
+                      }
+                      checked={this.state.checkedd.includes(
+                        item.idcauhoi,
+                        (dapanhchon = item.d),
+                        (ketqua = item.dapan),
+                      )}
                     />
-                    <Text style={{fontSize: Sizes.s40, marginTop: Sizes.s20}}>
-                    {item.d}
+                    <Text
+                      style={{
+                        fontSize: Sizes.s40,
+                        marginTop: Sizes.s10,
+                        marginLeft: Sizes.s20,
+                      }}>
+                      {item.d}
                     </Text>
                   </View>
                 </View>
