@@ -1,24 +1,22 @@
 <?php
 //đăng kí
+use \Firebase\JWT\JWT;
 include('../connect/connect.php');
 $json = file_get_contents('php://input');
 $obj = json_decode($json, true);
-$tenchude= $obj['tenchude'];
-$idmonhoc= $obj['idmonhoc'];
-$idthanhvien= $obj['idthanhvien'];
-if($tenchude !=''){
-	
-	$sql = "INSERT INTO chude(
-tenchude,
-idmonhoc,
-idthanhvien
-) VALUES('$tenchude','$idmonhoc','$idthanhvien')";
-	$result = $mysqli->query($sql);
-	if($result){
+$arrayDetail = $obj['arrayDetail'];
+foreach ($arrayDetail as $value) {
+    $sql = "UPDATE thanhvien
+    SET idlop  = $value[idlop]
+    WHERE thanhvien.idthanhvien = $value[idthanhvien]
+   
+   ";
+    $result = $mysqli->query($sql);
+    if($result){
 		$array=array(
             "status" => true,
             "statusCode"=>"200",
-			"message" => "đăng ký lớp thành công",
+			"message" => "thêm thành công",
 	);
 	}
 	else{
@@ -30,4 +28,5 @@ idthanhvien
 	}
 }
 print_r(json_encode($array));
+
 ?>

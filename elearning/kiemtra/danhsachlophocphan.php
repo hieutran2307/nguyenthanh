@@ -7,6 +7,7 @@ $idlop = $_GET['idlop'];
 $luat = $mysqli->query("SELECT
 lop.tenlop,
 lophocphan.tenhocphan,
+lophocphan.idlophocphan,
 thanhvien.hovaten as giaovien,
 monhoc.tenmonhoc
 FROM lophocphan,lop, thanhvien,monhoc

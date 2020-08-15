@@ -152,6 +152,28 @@ export default class BaiKiemTra extends React.Component {
     // do whatever you want with isChecked value
     alert('dấd');
   }
+  nopbai(){
+    fetch(`${API_PUBLIC}/kiemtra/themlophocphan.php`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tenhocphan:this.state.tenlop +  this.state.tenmonhoc,
+        idthanhvien: this.state.idgiangvien,
+        idmonhoc:this.state.idmonhoc,
+        idlop:this.state.idlop
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log('data tra ve', responseData);
+        if (responseData.statusCode === '200') {
+          this.props.navigation.navigate('DanhSachLopHoc');
+        }
+      });
+  }
   render() {
     console.log('diem so ', this.state.point);
     console.log('dap an chon duoc', this.state.dapanhchon);
@@ -318,7 +340,7 @@ export default class BaiKiemTra extends React.Component {
         </View>
 
         <View style={{flex: 1 / 7}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=> this.nopbai()}>
             <View
               style={{
                 height: Sizes.s70,

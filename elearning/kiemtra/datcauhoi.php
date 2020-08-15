@@ -10,6 +10,7 @@ $c= $obj['c'];
 $d= $obj['d'];
 $dapan= $obj['dapan'];
 $idchude= $obj['idchude'];
+$idthanhvien= $obj['idthanhvien'];
 if($tencauhoi !=''){
 	
 	  $sql = "INSERT INTO cauhoi(
@@ -19,7 +20,8 @@ b,
 c,
 d,
 dapan,
-idchude) VALUES('$tencauhoi','$a','$b','$c','$d','$dapan','$idchude')";
+idchude,
+idthanhvien) VALUES('$tencauhoi','$a','$b','$c','$d','$dapan','$idchude','$idthanhvien')";
 	$result = $mysqli->query($sql);
 	if($result){
 		$array=array(

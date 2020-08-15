@@ -5,15 +5,10 @@ include('../connect/connect.php');
 //$idkhoa = $_GET['idkhoa'];
 $luat = $mysqli->query("SELECT
 thanhvien.idthanhvien as id,
-thanhvien.ngaysinh,
-thanhvien.diachi,
-thanhvien.sodienthoai,
-thanhvien.email,
-thanhvien.maso,
 thanhvien.hovaten as name
 FROM nhom, thanhvien
 WHERE thanhvien.idnhom = nhom.idnhom
-AND thanhvien.idnhom =2");
+AND thanhvien.idnhom =3");
 while ($row = $luat->fetch_object()){		
     $luat_chittiet[] = $row;
 }

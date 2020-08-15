@@ -2,18 +2,18 @@
 
 include('../connect/connect.php');
 
-//$idkhoa = $_GET['idkhoa'];
+$idlop = $_GET['idlop'];
 $luat = $mysqli->query("SELECT
-thanhvien.idthanhvien as id,
+thanhvien.idthanhvien,
+thanhvien.hovaten,
 thanhvien.ngaysinh,
 thanhvien.diachi,
 thanhvien.sodienthoai,
-thanhvien.email,
-thanhvien.maso,
-thanhvien.hovaten as name
-FROM nhom, thanhvien
-WHERE thanhvien.idnhom = nhom.idnhom
-AND thanhvien.idnhom =2");
+thanhvien.maso
+FROM lop, thanhvien
+WHERE thanhvien.idnhom =3
+AND thanhvien.idlop = lop.idlop
+AND thanhvien.idlop = '$idlop'");
 while ($row = $luat->fetch_object()){		
     $luat_chittiet[] = $row;
 }
