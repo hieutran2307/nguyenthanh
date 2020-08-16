@@ -66,6 +66,11 @@ import BaiKiemTra from '../components/sinhvien//kiemtra/BaiKiemTra';
 import ThemSVLopHocPhan from '../components/admin/lophoc/ThemSVLopHocPhan';
 import KetQuaThi from '../components/sinhvien/kiemtra/KetQuaThi';
 import DanhSachBaiThi from '../components/sinhvien/kiemtra/DanhSachBaiThi';
+import DanhSachChuaKiemTra from '../components/giangvien/kiemtra/DanhSachChuaKiemTra';
+import DanhSachDangKiemTra from '../components/giangvien/kiemtra/DanhSachDangKiemTra';
+import  DanhSachKiemTraGV from '../components/giangvien/kiemtra/DanhSachKiemTraGV';
+import QuanLyBaiKiemTraGV from '../components/giangvien/kiemtra/QuanLyBaiKiemTraGV';
+import QuanLyBaiKiemTraTrangChu from '../components/giangvien/kiemtra/QuanLyBaiKiemTraTrangChu';
 //tab bottom
 const TabNavigatorLopHoc = createBottomTabNavigator(
   {
@@ -412,6 +417,21 @@ const RootStack = createStackNavigator(
   },
   DanhSachBaiThi:{
     screen:DanhSachBaiThi
+  },
+  DanhSachChuaKiemTra:{
+    screen:DanhSachChuaKiemTra
+  },
+  DanhSachDangKiemTra:{
+    screen:DanhSachDangKiemTra
+  },
+  DanhSachKiemTraGV:{
+    screen:DanhSachKiemTraGV
+  },
+  QuanLyBaiKiemTraGV:{
+    screen:QuanLyBaiKiemTraGV
+  },
+  QuanLyBaiKiemTraTrangChu:{
+    screen:QuanLyBaiKiemTraTrangChu
   }
 
   },

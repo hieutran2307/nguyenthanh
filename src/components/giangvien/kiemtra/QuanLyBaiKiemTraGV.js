@@ -21,15 +21,17 @@ import {CustomControlTab3 } from "../../custom/CustomControlTab3";
 import DanhSachChuaKiemTra from './DanhSachChuaKiemTra';
 import DanhSachDangKiemTra from './DanhSachDangKiemTra';
 import DanhSachKiemTraGV from './DanhSachKiemTraGV';
-export default class QuanLyBaiKiemTra extends React.Component {
+export default class QuanLyBaiKiemTraGV extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0,
+      idkiemtra: this.props.navigation.getParam('idkiemtra'),
+
     };
   }
   render() {
     const {navigation} = this.props;
+    console.lgo("lay duoc id kiem tra ko", this.state.idkiemtra)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -56,7 +58,7 @@ export default class QuanLyBaiKiemTra extends React.Component {
               this.setState({ selectedIndex: value });
             }}
           />
-           {this.state.selectedIndex === 0 ? <DanhSachChuaKiemTra {...this.props} />  : this.state.selectedIndex === 1 ? <DanhSachDangKiemTra {...this.props}  /> : <DanhSachKiemTraGV {...this.props}  />}
+          {this.state.selectedIndex === 0 ? <DanhSachChuaKiemTra /> : this.state.selectedIndex === 1 ? <DanhSachDangKiemTra /> : <DanhSachKiemTraGV />}
         </View>
       </View>
     );
