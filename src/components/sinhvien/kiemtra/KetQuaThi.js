@@ -70,7 +70,7 @@ export default class KetQuaThi extends React.Component {
           />
           <View>
         <Text style={styles.title}>Môn kiểm tra :{item.tenbaikiemtra}</Text>
-        <Text style={styles.title}>Thời gian: {item.tenbaikiemtra}</Text>
+        <Text style={styles.title}>Thời gian: {item.thoigian} phút</Text>
           </View>
         </View>
       </Card>

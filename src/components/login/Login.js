@@ -68,7 +68,7 @@ export default class Login extends React.Component {
         userProfile.data.giohoctap = this.props.loginData.user.giohoctap;
         userProfile.data.tracnghiem = this.props.loginData.user.tracnghiem;
         userProfile.data.hinhanh = this.props.loginData.user.hinhanh;
-        userProfile.data.idthanhvien = this.props.loginData.user.idnhom;
+        userProfile.data.idthanhvien = this.props.loginData.user.idthanhvien;
         this.props.navigation.replace('HomeAdmin');
       } else 
       // chuc nang giao vien
@@ -89,7 +89,7 @@ export default class Login extends React.Component {
         userProfile.data.giohoctap = this.props.loginData.user.giohoctap;
         userProfile.data.tracnghiem = this.props.loginData.user.tracnghiem;
         userProfile.data.hinhanh = this.props.loginData.user.hinhanh;
-        userProfile.data.idthanhvien = this.props.loginData.user.idnhom;
+        userProfile.data.idthanhvien = this.props.loginData.user.idthanhvien;
         this.props.navigation.replace('HomeGiangVien');
       } else 
       // chuc nang sinh vien
@@ -102,7 +102,8 @@ export default class Login extends React.Component {
         userProfile.data.sodienthoai = this.props.loginData.user.sodienthoai;
         userProfile.data.email = this.props.loginData.user.email;
         userProfile.data.masosinhvien = this.props.loginData.user.masosinhvien;
-        userProfile.data.khoa = this.props.loginData.user.khoa;
+        userProfile.data.khoa = this.props.loginData.user.tenkhoa;
+        userProfile.data.lophoc = this.props.loginData.user.tenlop;
         userProfile.data.chuyenkhoa = this.props.loginData.user.chuyenkhoa;
         userProfile.data.nienkhoa = this.props.loginData.user.nienkhoa;
         userProfile.data.khoahoc = this.props.loginData.user.khoahoc;
@@ -110,7 +111,7 @@ export default class Login extends React.Component {
         userProfile.data.giohoctap = this.props.loginData.user.giohoctap;
         userProfile.data.tracnghiem = this.props.loginData.user.tracnghiem;
         userProfile.data.hinhanh = this.props.loginData.user.hinhanh;
-        userProfile.data.idthanhvien = this.props.loginData.user.idnhom;
+        userProfile.data.idthanhvien = this.props.loginData.user.idthanhvien;
         this.props.navigation.replace('HomeSinhVien');
       }
     }

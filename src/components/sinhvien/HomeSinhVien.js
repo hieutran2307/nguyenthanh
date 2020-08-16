@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
@@ -16,36 +17,99 @@ import {/* userProfile,*/ serverpic} from '../../config/settings';
 
 export default class HomeSinhVien extends React.Component {
   render() {
-    return (
-      <ImageBackground
-        source={require('../../res/images/bg.jpg')}
-        style={styles.image}>
-        <Header title="CAO ĐẲNG KỸ THUẬT CAO THẮNG" />
-        <View style={styles.viewavatar}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ThongTinTaiKhoan')}>
-            <Image
+    return (   
+      <View style={{flex: 1}}>
+        <ImageBackground
+            style={{
+              width: '100%',
+              height: Sizes.s340 + Sizes.s160,
+              backgroundColor: '#4eb1a2',
+              borderRadius: Sizes.s40,
+            }}>
+            <Text
+              style={{
+                fontSize: Sizes.s40,
+                marginTop: Sizes.s100,
+                marginLeft: Sizes.s40,
+                color: '#FFFF',
+                fontWeight: 'bold',
+              }}>
+              XIN CHÀO SINH VIÊN
+            </Text>
+            <View style={styles.background}>
+              <Image
+                source={{
+                  uri: `${serverpic}/${userProfile.data.hinhanh}`,
+                }}
+                style={styles.avatar}
+              />
+              <View
+                style={{
+                  flexDirection: 'column',
+                  marginTop: Sizes.s20,
+                  marginLeft: Sizes.s10,
+                }}>
+                <View style={{flexDirection: 'row'}}>
+                  <Image
+                    source={require('../../res/images/sinhviens.png')}
+                    style={styles.icon}
+                  />
+                  <Text
+                    style={{
+                      fontSize: Sizes.s30,
+                      marginTop: Sizes.s20,
+                      marginLeft: Sizes.s10,
+                    }}>
+                    {userProfile.data.hovaten}
+                  </Text>
+                </View>
+                <View style={{flexDirection: 'row'}}>
+                  <Image
+                    source={require('../../res/images/khoas.png')}
+                    style={styles.icon}
+                  />
+                  <Text
+                    style={{
+                      fontSize: Sizes.s30,
+                      marginTop: Sizes.s20,
+                      marginLeft: Sizes.s10,
+                    }}>
+                    {userProfile.data.khoa}
+                  </Text>
+                </View>
+
+                <View style={{flexDirection: 'row'}}>
+                  <Image
+                    source={require('../../res/images/lops.png')}
+                    style={styles.icon}
+                  />
+                  <Text
+                    style={{
+                      fontSize: Sizes.s30,
+                      marginTop: Sizes.s20,
+                      marginLeft: Sizes.s10,
+                    }}>
+                    {userProfile.data.lophoc}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            {/* <Image
               source={{
                 uri: `${serverpic}/${userProfile.data.hinhanh}`,
               }}
               style={styles.avatar}
             />
-          </TouchableOpacity>
-          <Text style={styles.textavatar}>{userProfile.data.hovaten}</Text>
-        </View>
-        <View style={styles.lichsuview}>
-          <Image
-            style={styles.imagelichsu}
-            source={require('../../res/images/lichsu.png')}
-          />
-        </View>
-        <View style={styles.chucnangview}>
-          <Text style={styles.txtchucnang}>
-            Xin chào, bạn chọn tính năng gì ?
-          </Text>
-          <View style={styles.fullField}>
-            <View style={styles.colMainLeft}>
-              <TouchableOpacity
+            <View style={styles.thongtin}>
+              <Text>
+                ssss
+                </Text>
+              </View> */}
+          </ImageBackground>
+        <ScrollView style={styles.container}>
+             {/* <View style={styles.fullField}>
+             <View style={styles.colMainLeft}>
+               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate('KiemTraCode')}>
                 <View
                   colors={['rgb(150,150,150)', 'rgb(105,105,105)']}
@@ -85,14 +149,68 @@ export default class HomeSinhVien extends React.Component {
                 </View>
               </TouchableOpacity>
             </View>
-          </View>
-        </View>
-      </ImageBackground>
+            </View> */}
+            <View style={{marginTop:Sizes.s40, marginHorizontal:Sizes.s40}}>
+            <Text style={{fontSize:Sizes.s40}}>
+              Vui lòng chọn các tính năng
+              </Text> 
+              <View style={styles.fullField}>
+             <View style={styles.colMainLeft}>
+               <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('KiemTraCode')}>
+                <View
+                  colors={['rgb(150,150,150)', 'rgb(105,105,105)']}
+                  style={styles.boxMain}>
+                  <View
+                    style={[
+                      styles.highLightBoxMain,
+                      {backgroundColor: '#f06955'},
+                    ]}>
+                    <View style={styles.viewIonChucNang}>
+                      <Image
+                        source={require('../../res/images/quizs.png')}
+                        style={styles.imageBoxChucNang}
+                      />
+                    </View>
+                    <Text style={styles.textchucnang}>Kiểm tra</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.colMainRight}>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate('DanhSachBaiThi')}>
+                <View
+                  colors={['rgb(150,150,150)', 'rgb(105,105,105)']}
+                  style={styles.boxMain}>
+                  <View
+                    backgroundColor="#58cba7"
+                    style={styles.highLightBoxMain}>
+                    <View style={styles.viewIonChucNang}>
+                      <Image
+                        source={require('../../res/images/rank.png')}
+                        style={styles.imageBoxChucNang}
+                      />
+                    </View>
+                    <Text style={styles.textchucnang}> Điểm kiểm tra </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+            </View>
+              </View>
+
+        </ScrollView>
+      </View>
+    
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFF',
+  },
   image: {
     flex: 1,
   },
@@ -102,11 +220,6 @@ const styles = StyleSheet.create({
     marginTop: Sizes.s260,
     marginHorizontal: Sizes.s30,
     flexDirection: 'row',
-  },
-  avatar: {
-    width: Sizes.s140,
-    height: Sizes.s140,
-    borderRadius: Sizes.s100,
   },
   textavatar: {
     position: 'absolute',
@@ -216,5 +329,34 @@ const styles = StyleSheet.create({
   },
   textKhoaHoc: {
     fontSize: Sizes.s30,
+  },
+
+  /// cap nhat mơi
+  background: {
+    backgroundColor: '#FFFF',
+    marginTop: Sizes.s50,
+    width: '90%',
+    marginHorizontal: Sizes.s30,
+    height: Sizes.s240,
+    borderRadius: Sizes.s40,
+    flexDirection: 'row',
+  },
+  avatar: {
+    width: Sizes.s140,
+    height: Sizes.s200,
+    backgroundColor: '#f1b25c',
+    marginTop: Sizes.s10,
+    marginLeft: Sizes.s20,
+  },
+  thongtin: {
+    backgroundColor: 'red',
+    width: '100%',
+    height: Sizes.s100,
+    marginTop: Sizes.s160,
+    marginLeft: Sizes.s30,
+  },
+  icon: {
+    width: Sizes.s70,
+    height: Sizes.s70,
   },
 });
