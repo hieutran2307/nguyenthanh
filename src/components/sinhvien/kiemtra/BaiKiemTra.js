@@ -18,7 +18,7 @@ import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
 import Headers from '../../custom/Headers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
+import {userProfile, API_PUBLIC} from '../../../config/settings';
 import UserAvatar from 'react-native-user-avatar';
 import {CheckBox, SearchBar} from 'react-native-elements';
 import MultiSelect from 'react-native-multiple-select';
@@ -28,6 +28,7 @@ export default class BaiKiemTra extends React.Component {
     super(props);
     this.state = {
       makiemtra: this.props.navigation.getParam('makiemtra'),
+      idkiemtra: this.props.navigation.getParam('idkiemtra'),
       thongtibaikiemtra: [],
       danhsachcauhoi: [],
       dapan: '',
@@ -42,17 +43,18 @@ export default class BaiKiemTra extends React.Component {
   }
   checkItemketquaa = (item) => {
     const {checkeda} = this.state;
-    if ((this.state.dapanhchon = this.state.ketqua)) {
-      this.setState({
-        point: this.state.point + 1,
-      });
-    }
+
     if (!checkeda.includes(item)) {
       this.setState({
         checkeda: [...checkeda, item],
         idcauhoi: item,
-        dapanhchon: dapanhchon,
-        ketqua: ketqua,
+        dapanhchona: dapanhchona,
+        ketquaa: ketquaa,
+      });
+    } else
+    if ((this.state.dapanhchona === this.state.ketquaa)) {
+      this.setState({
+        point: this.state.point + 1,
       });
     } else {
       this.setState({checkeda: checkeda.filter((a) => a !== item)});
@@ -61,17 +63,18 @@ export default class BaiKiemTra extends React.Component {
 
   checkItemketquab = (item) => {
     const {checkedb} = this.state;
-    if ((this.state.dapanhchon = this.state.ketqua)) {
-      this.setState({
-        point: this.state.point + 1,
-      });
-    }
+
     if (!checkedb.includes(item)) {
       this.setState({
         checkedb: [...checkedb, item],
         idcauhoi: item,
-        dapanhchon: dapanhchon,
-        ketqua: ketqua,
+        dapanhchonb: dapanhchonb,
+        ketquab: ketquab,
+      });
+    } else
+    if ((this.state.dapanhchonb === this.state.ketquab)) {
+      this.setState({
+        point: this.state.point + 1,
       });
     } else {
       this.setState({checkedb: checkedb.filter((a) => a !== item)});
@@ -79,17 +82,18 @@ export default class BaiKiemTra extends React.Component {
   };
   checkItemketquac = (item) => {
     const {checkedc} = this.state;
-    if ((this.state.dapanhchon = this.state.ketqua)) {
-      this.setState({
-        point: this.state.point + 1,
-      });
-    }
+
     if (!checkedc.includes(item)) {
       this.setState({
         checkedc: [...checkedc, item],
         idcauhoi: item,
-        dapanhchon: dapanhchon,
-        ketqua: ketqua,
+        dapanhchonc: dapanhchonc,
+        ketquac: ketquac,
+      });
+    } else
+    if ((this.state.dapanhchonc === this.state.ketquac)) {
+      this.setState({
+        point: this.state.point + 1,
       });
     } else {
       this.setState({checkedc: checkedc.filter((a) => a !== item)});
@@ -97,17 +101,18 @@ export default class BaiKiemTra extends React.Component {
   };
   checkItemketquad = (item) => {
     const {checkedd} = this.state;
-    if ((this.state.dapanhchon = this.state.ketqua)) {
-      this.setState({
-        point: this.state.point + 1,
-      });
-    }
+
     if (!checkedd.includes(item)) {
       this.setState({
         checkedd: [...checkedd, item],
         idcauhoi: item,
-        dapanhchon: dapanhchon,
-        ketqua: ketqua,
+        dapanhchond: dapanhchond,
+        ketquad: ketquad,
+      });
+    } else
+    if ((this.state.dapanhchond === this.state.ketquad)) {
+      this.setState({
+        point: this.state.point + 1,
       });
     } else {
       this.setState({checkedd: checkedd.filter((a) => a !== item)});
@@ -153,33 +158,30 @@ export default class BaiKiemTra extends React.Component {
     alert('dấd');
   }
   nopbai(){
-    fetch(`${API_PUBLIC}/kiemtra/themlophocphan.php`, {
+    fetch(`${API_PUBLIC}/thi/chamdiem.php`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        tenhocphan:this.state.tenlop +  this.state.tenmonhoc,
-        idthanhvien: this.state.idgiangvien,
-        idmonhoc:this.state.idmonhoc,
-        idlop:this.state.idlop
+        idkiemtra:this.state.idkiemtra,
+        idthanhvien:userProfile.data.idthanhvien,
+        diemso:this.state.point
       }),
     })
       .then((response) => response.json())
       .then((responseData) => {
         console.log('data tra ve', responseData);
         if (responseData.statusCode === '200') {
-          this.props.navigation.navigate('DanhSachLopHoc');
+          this.props.navigation.navigate('KetQuaThi',{
+            makiemtra:this.state.makiemtra,
+            diemso:this.state.point,
+          });
         }
       });
   }
   render() {
-    console.log('diem so ', this.state.point);
-    console.log('dap an chon duoc', this.state.dapanhchon);
-
-    console.log('ket qua cau hoi', this.state.ketqua);
-    console.log('diem so', this.state.point);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -235,14 +237,14 @@ export default class BaiKiemTra extends React.Component {
                       onPress={() =>
                         this.checkItemketquaa(
                           item.idcauhoi,
-                          (dapanhchon = item.a),
-                          (ketqua = item.dapan),
+                          (dapanhchona = 'a'),
+                          (ketquaa = item.dapan),
                         )
                       }
                       checked={this.state.checkeda.includes(
                         item.idcauhoi,
-                        (dapanhchon = item.a),
-                        (ketqua = item.dapan),
+                        (dapanhchona = item.a),
+                        (ketquaa = item.dapan),
                       )}
                     />
 
@@ -262,14 +264,14 @@ export default class BaiKiemTra extends React.Component {
                       onPress={() =>
                         this.checkItemketquab(
                           item.idcauhoi,
-                          (dapanhchon = item.b),
-                          (ketqua = item.dapan),
+                          (dapanhchonb = 'b'),
+                          (ketquab = item.dapan),
                         )
                       }
                       checked={this.state.checkedb.includes(
                         item.idcauhoi,
-                        (dapanhchon = item.b),
-                        (ketqua = item.dapan),
+                        (dapanhchonb = 'b'),
+                        (ketquab = item.dapan),
                       )}
                     />
                     <Text
@@ -288,14 +290,14 @@ export default class BaiKiemTra extends React.Component {
                       onPress={() =>
                         this.checkItemketquac(
                           item.idcauhoi,
-                          (dapanhchon = item.c),
-                          (ketqua = item.dapan),
+                          (dapanhchonc = 'c'),
+                          (ketquac = item.dapan),
                         )
                       }
                       checked={this.state.checkedc.includes(
                         item.idcauhoi,
-                        (dapanhchon = item.c),
-                        (ketqua = item.dapan),
+                        (dapanhchonc = 'c'),
+                        (ketquac = item.dapan),
                       )}
                     />
                     <Text
@@ -314,14 +316,14 @@ export default class BaiKiemTra extends React.Component {
                       onPress={() =>
                         this.checkItemketquad(
                           item.idcauhoi,
-                          (dapanhchon = item.d),
-                          (ketqua = item.dapan),
+                          (dapanhchond = 'd'),
+                          (ketquad = item.dapan),
                         )
                       }
                       checked={this.state.checkedd.includes(
                         item.idcauhoi,
-                        (dapanhchon = item.d),
-                        (ketqua = item.dapan),
+                        (dapanhchond = 'd'),
+                        (ketquad = item.dapan),
                       )}
                     />
                     <Text

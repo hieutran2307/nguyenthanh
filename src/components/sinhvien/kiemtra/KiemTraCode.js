@@ -52,6 +52,7 @@ export default class KiemTraCode extends React.Component {
         if (responseData.statusCode === '200') {
           this.props.navigation.navigate('BaiKiemTra',{
             makiemtra:responseData.user.makiemtra,
+            idkiemtra:responseData.user.idkiemtra,
           });
         } else{
             Alert.alert(

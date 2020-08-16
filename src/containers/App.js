@@ -64,6 +64,7 @@ import HomeSinhVien from '../components/sinhvien/HomeSinhVien';
 import KiemTraCode from '../components/sinhvien/kiemtra/KiemTraCode';
 import BaiKiemTra from '../components/sinhvien//kiemtra/BaiKiemTra';
 import ThemSVLopHocPhan from '../components/admin/lophoc/ThemSVLopHocPhan';
+import KetQuaThi from '../components/sinhvien/kiemtra/KetQuaThi';
 //tab bottom
 const TabNavigatorLopHoc = createBottomTabNavigator(
   {
@@ -404,9 +405,13 @@ const RootStack = createStackNavigator(
   },
   BaiKiemTra:{
     screen:BaiKiemTra
-  }
+  },
+  KetQuaThi:{
+    screen:KetQuaThi
   },
 
+  },
+ 
   {
     mode: 'card',
     headerMode: 'none',
