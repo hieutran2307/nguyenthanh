@@ -52,7 +52,9 @@ export default class DanhSachChuaKiemTra extends React.Component {
           refreshing={this.state.danhsachkiemtra}
           extraData={this.state.danhsachkiemtra}
           renderItem={({item, index}) => (
-            <TouchableOpacity onPress={()=> this.props.navigation.navigate('QuanLyBaiKiemTraGV')}>
+            <TouchableOpacity onPress={()=> navigation.navigate('QuanLyBaiKiemTraTrangChu',{
+              idkiemtra:item.idkiemtra
+            })}>
               <View style={styles.wrapper}>
               <View style={{flex: 1}}>
                 <View style={{marginRight: Sizes.s50, flexDirection: 'row'}}>
