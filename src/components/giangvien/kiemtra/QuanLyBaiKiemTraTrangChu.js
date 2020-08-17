@@ -178,8 +178,6 @@ const styles = StyleSheet.create({
     color:'#4596dd',
   },
   thongkediem:{
-    flex:1,
-    backgroundColor:'red',
     marginTop:Sizes.s100,
     alignItems:'flex-end',
     marginRight:Sizes.s200

@@ -70,6 +70,7 @@ import DanhSachChuaKiemTra from '../components/giangvien/kiemtra/DanhSachChuaKie
 import DanhSachDangKiemTra from '../components/giangvien/kiemtra/DanhSachDangKiemTra';
 import  DanhSachKiemTraGV from '../components/giangvien/kiemtra/DanhSachKiemTraGV';
 import QuanLyBaiKiemTraTrangChu from '../components/giangvien/kiemtra/QuanLyBaiKiemTraTrangChu';
+import QuanLyThongTinThongKe from '../components/giangvien/kiemtra/QuanLyBaiKiemTraTrangChu';
 //tab bottom
 const TabNavigatorLopHoc = createBottomTabNavigator(
   {
@@ -429,6 +430,9 @@ const RootStack = createStackNavigator(
 
   QuanLyBaiKiemTraTrangChu:{
     screen:QuanLyBaiKiemTraTrangChu
+  },
+  QuanLyThongTinThongKe:{
+    screen:QuanLyThongTinThongKe
   }
 
   },
