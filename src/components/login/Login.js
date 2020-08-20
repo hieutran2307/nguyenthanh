@@ -1,32 +1,28 @@
 import React from 'react';
 import {
-  Button,
   Image,
-  ImageBackground,
   View,
   Text,
   StyleSheet,
   KeyboardAvoidingView,
   Dimensions,
   TextInput,
-  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import CustomButton from '../custom/CustomButton';
-import {Images} from '../../res';
 import Block from '../custom/Block';
 import {Sizes} from '@dungdang/react-native-basic';
 import NextArrowButton from '../custom/NextArrowButton';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+
 import {userProfile} from '../../config/settings';
-import Loading from '../custom/Loading';
+import Toast from 'react-native-toast-message';
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '12345',
-      password: '123123',
+      username: '',
+      password: '',
     };
   }
   onUsernameChange = (value) => {
@@ -50,7 +46,7 @@ export default class Login extends React.Component {
   };
   componentDidUpdate(prevProps) {
     if (prevProps.loginData !== this.props.loginData) {
-     //chuc nang admin
+      //chuc nang admin
       if (
         this.props.statusCode === '200' &&
         this.props.loginData.user.idnhom === '1'
@@ -70,9 +66,9 @@ export default class Login extends React.Component {
         userProfile.data.hinhanh = this.props.loginData.user.hinhanh;
         userProfile.data.idthanhvien = this.props.loginData.user.idthanhvien;
         this.props.navigation.replace('HomeAdmin');
-      } else 
+      }
       // chuc nang giao vien
-      if (
+      else if (
         this.props.statusCode === '200' &&
         this.props.loginData.user.idnhom === '2'
       ) {
@@ -91,9 +87,9 @@ export default class Login extends React.Component {
         userProfile.data.hinhanh = this.props.loginData.user.hinhanh;
         userProfile.data.idthanhvien = this.props.loginData.user.idthanhvien;
         this.props.navigation.replace('HomeGiangVien');
-      } else 
+      }
       // chuc nang sinh vien
-      if (
+      else if (
         this.props.statusCode === '200' &&
         this.props.loginData.user.idnhom === '3'
       ) {
@@ -117,18 +113,25 @@ export default class Login extends React.Component {
     }
     if (prevProps.error !== this.props.error) {
       if (this.props.error !== '') {
-        Alert.alert(
-          'Thông báo',
-          this.props.error,
-          [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-          {cancelable: false},
-        );
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Thông báo',
+          text2: this.props.error,
+          visibilityTime: 4000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 40,
+          onShow: () => {},
+          onHide: () => {},
+        });
       }
     }
   }
   render() {
     return (
       <SafeAreaView style={styles.container}>
+        <Toast ref={(ref) => Toast.setRef(ref)} />
         <View style={{flex: 1}}>
           <KeyboardAvoidingView behavior="padding" style={{flex: 1}}>
             <Block center middle>

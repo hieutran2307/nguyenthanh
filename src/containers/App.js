@@ -10,8 +10,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import LoginContainer from '../containers/login/LoginContainer';
 import WelcomeScreen from '../components/welcomeScreen/WelcomeScreen';
 
-//chuc nang admin
-import HomeAdmin from '../components/admin/HomeAdmin';
+
 
 //quan ly khoa hoc
 import DanhSachMonHoc from '../components/admin/monhoc/DanhSachMonHoc';
@@ -72,6 +71,96 @@ import  DanhSachKiemTraGV from '../components/giangvien/kiemtra/DanhSachKiemTraG
 import QuanLyBaiKiemTraTrangChu from '../components/giangvien/kiemtra/QuanLyBaiKiemTraTrangChu';
 import QuanLyThongTinThongKe from '../components/giangvien/kiemtra/QuanLyBaiKiemTraTrangChu';
 //tab bottom
+
+// sap xep lai 
+//chuc nang admin
+import HomeAdmin from '../components/admin/HomeAdmin';
+import ThongBao from '../components/admin/thongbao/ThongBao';
+import ThongTinTaiKhoan from '../components/admin/thongtintaikhoan/ThongTinTaiKhoan';
+
+// tab admin
+const TabNavigatorAdmin = createBottomTabNavigator(
+  {
+    
+    HomeApp: {
+      screen: HomeAdmin,
+      navigationOptions: {
+        tabBarLabel: "Tổng quan",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+                source={require("../res/images/tongquan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/tongquan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+    AdminThongBao: {
+      screen: ThongBao,
+      navigationOptions: {
+        tabBarLabel: "Thông Báo",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/notification2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/notification.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+    AdminThongTinTaiKhoan: {
+      screen: ThongTinTaiKhoan,
+      navigationOptions: {
+        tabBarLabel: "Tài khoản",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/user_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/user_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: "#4390DF",
+      inactiveTintColor: "#707070",
+      style: {
+        paddingTop: 11,
+        paddingBottom: 10,
+        height: 63,
+      },
+    },
+  }
+);
+const TabAdmin = createAppContainer(TabNavigatorAdmin);
+
+
 const TabNavigatorLopHoc = createBottomTabNavigator(
   {
     
@@ -286,14 +375,23 @@ const RootStack = createStackNavigator(
     Login:{
       screen:LoginContainer
     },
+// chuc nang admin
+HomeAdmin:{
+  screen:TabAdmin
+},
+
+
+
+
+
+
+
   //chuc nang sinh vien
   HomeSinhVien:{
     screen:HomeSinhVien
   },
   // chuc nang admin
-  HomeAdmin:{
-    screen:HomeAdmin
-  },
+ 
   // quan ly khoa hoc
   DanhSachMonHoc:{
     screen:DanhSachMonHoc

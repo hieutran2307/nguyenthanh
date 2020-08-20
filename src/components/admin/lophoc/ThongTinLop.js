@@ -25,13 +25,14 @@ export default class ThongTinLop extends React.Component {
     super(props);
     this.state = {
       tenlop: this.props.navigation.getParam('tenlop'),
+      idlop: this.props.navigation.getParam('idlop'),
       soluongsinhvien: this.props.navigation.getParam('soluongsinhvien'),
     };
   }
 
 
   render() {
-    console.log('get id cap nhat mon hoc', this.state.tenmonhocs);
+    console.log('get id cap nhat mon hoc', this.state.idlop);
     return (
       <View style={styles.container}>
         <View style={styles.header}>

@@ -67,7 +67,6 @@ export default class ThemLopHocPhan extends React.Component {
   componentDidMount() {
     this.getData();
     this.getDataGiangVien();
-    const tenhocphan=this.state.tenlop + this.state.tenmonhoc;
   }
   getData = () => {
     const url = `${API_PUBLIC}/kiemtra/danhsachmonhochp.php`;
@@ -139,7 +138,6 @@ export default class ThemLopHocPhan extends React.Component {
     });
   };
 
-  // gui du lieu len server
  
   async onSubmitSteps() {
     fetch(`${API_PUBLIC}/kiemtra/themlophocphan.php`, {
@@ -157,20 +155,14 @@ export default class ThemLopHocPhan extends React.Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log('data tra ve', responseData);
+        console.log('data tra ve co them duoc ko', responseData);
         if (responseData.statusCode === '200') {
-          this.props.navigation.navigate('DanhSachLopHoc');
+          this.props.navigation.navigate('HocPhan');
         }
       });
   };
   render() {
-    const {selectedItems, selectedItemsMonHoc} = this.state;
-    console.log("id giang vien", this.state.idgiangvien)
-    console.log('id mon hoc', this.state.idmonhoc);
-    console.log('id lop ben them moi', this.state.idlop);
-    // console.log("ten mon hoc", this.state.tenmonhoc)
-    // console.log("ten lop ben tao lop hoc phan", this.state.tenlop)
-    // console.log("ten lop hoc phan",this.state.tenhocphan)
+console.log("them lop hoc phan idlophocphan ", this.state.idlop )
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -189,7 +181,7 @@ export default class ThemLopHocPhan extends React.Component {
               <View>
                 <SearchBar
                   containerStyle={styles.search}
-                  placeholder="Nhập tên sinh viên...."
+                  placeholder="Nhập tên môn học...."
                   lightTheme
                   round
                   onChangeText={(text) => this.searchFilterFunction(text)}

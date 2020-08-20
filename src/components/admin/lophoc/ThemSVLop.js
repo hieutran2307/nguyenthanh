@@ -75,7 +75,7 @@ export default class ThemSVLop extends React.Component {
     });
 
     const newData = this.arrayholder.filter((item) => {
-      const itemData = `${item.hovaten.toUpperCase()}`;
+      const itemData = `${item.hovaten.toUpperCase()} ${item.maso.toUpperCase()}`;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -105,7 +105,7 @@ export default class ThemSVLop extends React.Component {
   }
   render() {
     const {navigation} = this.props;
-    console.log('lay dc id lop ko ta', this.state.idlop);
+    console.log('DATA THEM VAO', this.state.arrayDetail);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -119,7 +119,7 @@ export default class ThemSVLop extends React.Component {
         <View style={{flex: 1}}>
         <SearchBar
                         containerStyle={styles.search}
-                        placeholder="Nhập tên sinh viên...."
+                        placeholder="Nhập tên hay mã số sinh viên...."
                         lightTheme
                         round
                         onChangeText={text => this.searchFilterFunction(text)}
@@ -159,7 +159,7 @@ export default class ThemSVLop extends React.Component {
         </View>
         <View style={{  flex:1/9}}>
         <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
-            <Text style={styles.textbtn}>Tạo mới</Text>
+            <Text style={styles.textbtn}>CẬP NHẬT</Text>
           </TouchableOpacity>
 
 </View>

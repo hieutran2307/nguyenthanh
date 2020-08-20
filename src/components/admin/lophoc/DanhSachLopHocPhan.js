@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
@@ -24,26 +25,50 @@ export default class DanhSachLopHocPhan extends React.Component {
     this.state = {
       idlop: this.props.navigation.getParam('idlop'),
       tenlop: this.props.navigation.getParam('tenlop'),
+      refreshing: false,
     };
+    this.GetData();
   }
-  componentDidMount() {
-    fetch(
+  GetData = () => {
+    //Service to get the data from the server to render
+    return fetch(
       `${API_PUBLIC}/kiemtra/danhsachlophocphan.php?idlop=${this.state.idlop}`,
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log('data danh sach hoc phan', responseJson);
         this.setState({
-          danhsachlophoc: responseJson,
+          refreshing: false,
+          dataSource: responseJson,
         });
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+  ListViewItemSeparator = () => {
+    return (
+      //returning the listview item saparator view
+      <View
+        style={{
+          height: 0.2,
+          width: '90%',
+          backgroundColor: '#808080',
+        }}
+      />
+    );
+  };
+  onRefresh() {
+    this.setState({dataSource: []});
+    this.GetData();
   }
   render() {
-    console.log('thong tin id lop ben lop hoc phan', this.state.idlop);
-    console.log("ten lop", this.state.tenlop)
+    if (this.state.refreshing) {
+      return (
+        <View style={{flex: 1, paddingTop: 20}}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -53,60 +78,48 @@ export default class DanhSachLopHocPhan extends React.Component {
               this.props.navigation.goBack('');
             }}
             onPressShowMenu={() => {
-              this.props.navigation.navigate('ThemLopHocPhan',{
-                idlop:this.state.idlop,
-                tenlop:this.state.tenlop
-
-              })
+              this.props.navigation.navigate('ThemLopHocPhan', {
+                idlop: this.state.idlop,
+                tenlop: this.state.tenlop,
+              });
             }}
           />
         </View>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          {this.state.danhsachlophoc === undefined ? (
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-              <Image
-                source={require('../../../res/images/error.png')}
-                style={styles.img}
-              />
-              <Text style={styles.textthongbao}>
-                Hiện tại chưa có danh sách lớp học phần trong lớp này.
-              </Text>
-
-              <TouchableOpacity
-                style={styles.btn}
-                onPress={() =>
-                  this.props.navigation.navigate('ThemLopHocPhan',{
-                    id:this.state.idlop,
-                    tenlop:this.state.tenlop
-                  })
-                }>
-                <Text style={styles.txtbtn}>TẠO LỚP HỌC PHẦN</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <FlatList
+        <FlatList
               keyExtractor={(item) => item.idlop}
               style={styles.container}
-              data={this.state.danhsachlophoc}
-              refreshing={this.state.danhsachlophoc}
+              data={this.state.dataSource}
+              ItemSeparatorComponent={this.ListViewItemSeparator}
+              enableEmptySections={true}
               renderItem={({item}) => (
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('DanhSachSinhVIenLopHocPhan',{
-                  idlop:this.state.idlop,
-                  idlophocphan:item.idlophocphan
-                })}>
-    <View style={styles.wrapper}>
-                  <Text style={styles.title}>Lớp: {item.tenlop}</Text>
-                  <Text style={styles.title}>
-                    Lớp học phần: {item.tenhocphan}
-                  </Text>
-                  <Text style={styles.title}>Giáo viên: {item.giaovien}</Text>
-                  <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
-                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate(
+                      'DanhSachSinhVIenLopHocPhan',
+                      {
+                        idlop: this.state.idlop,
+                        idlophocphan: item.idlophocphan,
+                      },
+                    )
+                  }>
+                  <View style={styles.wrapper}>
+                    <Text style={styles.title}>Lớp: {item.tenlop}</Text>
+                    <Text style={styles.title}>
+                      Lớp học phần: {item.tenhocphan}
+                    </Text>
+                    <Text style={styles.title}>Giáo viên: {item.giaovien}</Text>
+                    <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
+                  </View>
                 </TouchableOpacity>
-            
               )}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this.onRefresh.bind(this)}
+                />
+              }
             />
-          )}
         </View>
       </View>
     );

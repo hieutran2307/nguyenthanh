@@ -20,25 +20,17 @@ export default class HomeAdmin extends React.Component {
       <ImageBackground
         source={require('../../res/images/bg.jpg')}
         style={styles.image}>
-        <Header title="CAO ĐẲNG KỸ THUẬT CAO THẮNG" />
         <View style={styles.viewavatar}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ThongTinTaiKhoan')}>
-            <Image
-              source={{
-                uri: `${serverpic}/${userProfile.data.hinhanh}`,
-              }}
-              style={styles.avatar}
-            />
-          </TouchableOpacity>
+          <Image
+            source={{
+              uri: `${serverpic}/${userProfile.data.hinhanh}`,
+            }}
+            style={styles.avatar}
+          />
+
           <Text style={styles.textavatar}>{userProfile.data.hovaten}</Text>
         </View>
-        <View style={styles.lichsuview}>
-          <Image
-            style={styles.imagelichsu}
-            source={require('../../res/images/lichsu.png')}
-          />
-        </View>
+
         <View style={styles.chucnangview}>
           <Text style={styles.txtchucnang}>
             Xin chào, Quản trị viên chọn tính năng gì ?
@@ -124,9 +116,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   viewavatar: {
-    position: 'absolute',
     height: Sizes.s40,
-    marginTop: Sizes.s260,
+    marginTop: Sizes.s160,
     marginHorizontal: Sizes.s30,
     flexDirection: 'row',
   },
@@ -166,7 +157,7 @@ const styles = StyleSheet.create({
   },
   chucnangview: {
     flex: 1,
-    marginTop: Sizes.s30,
+    marginTop: Sizes.s260,
     marginHorizontal: Sizes.s30,
   },
   txtchucnang: {

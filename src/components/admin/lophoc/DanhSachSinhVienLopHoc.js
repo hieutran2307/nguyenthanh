@@ -1,15 +1,10 @@
 import React from 'react';
 import {
-  Button,
-  Image,
   View,
   Text,
-  ScrollView,
   StyleSheet,
-  TouchableHighlight,
   Dimensions,
-  TouchableOpacity,
-  ImageBackground,
+  RefreshControl,
   FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
@@ -25,24 +20,50 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
     super(props);
     this.state = {
         idlop: this.props.navigation.getParam('idlop'),
-      danhsachlop: [],
+        dataSource:'',
+      refreshing: false,
     };
+    this.GetData();
   }
-  componentDidMount() {
+  GetData = () => {
+    //Service to get the data from the server to render
     fetch(`${API_PUBLIC}/kiemtra/danhsachsinhvientheolop.php?idlop=${this.state.idlop}`)
-      .then((response) => response.json())
-      .then((responseJson) => {
+
+      .then(response => response.json())
+      .then(responseJson => {
         this.setState({
-            danhsachlop: responseJson,
+          refreshing: false,
+          dataSource: responseJson
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
+  };
+  ListViewItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 0.2,
+          width: '90%',
+          backgroundColor: '#808080',
+        }}
+      />
+    );
+  };
+  onRefresh() {
+    this.setState({ dataSource: [] });
+    this.GetData();
   }
   render() {
-    const {navigation} = this.props;
-    console.log("get duoc id lop ko ta", this.state.idlop)
+  console.log("id lop ben danh sach lop", this.state.idlop)
+    if (this.state.refreshing) {
+      return (
+        <View style={{ flex: 1, paddingTop: 20 }}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -61,10 +82,9 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
         <View style={{flex: 1}}>
           <FlatList
             style={styles.container}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.idthanhvien}
-            data={this.state.danhsachlop}
-            refreshing={this.state.danhsachlop}
+            data={this.state.dataSource}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          enableEmptySections={true}
             renderItem={({item, index}) => (
               <View style={styles.wrapper}>
                 <View style={{flex: 1}}>
@@ -81,6 +101,12 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
            
               </View>
             )}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh.bind(this)}
+              />
+            }
           />
         </View>
       </View>
