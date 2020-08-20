@@ -27,8 +27,8 @@ export default class GVDanhSachChuDe extends React.Component {
       listkhoahoc: '',
       refreshing: false,
       idmonhoc: this.props.navigation.getParam('idmonhoc'),
-
     };
+    
   }
   componentDidMount() {
     fetch(`${API_PUBLIC}/kiemtra/chude.php?idmonhoc=${this.state.idmonhoc}`)
@@ -49,8 +49,8 @@ export default class GVDanhSachChuDe extends React.Component {
   }
 
   render() {
-    console.log('gv idmonhoc', this.state.idmonhoc,{
-      idmonhoc:this.state.idmonhoc
+    console.log('gv idmonhoc', this.state.idmonhoc, {
+      idmonhoc: this.state.idmonhoc,
     });
     return (
       <View style={styles.container}>
@@ -61,136 +61,53 @@ export default class GVDanhSachChuDe extends React.Component {
               this.props.navigation.goBack('');
             }}
             onPressShowMenu={() => {
-              this.props.navigation.navigate('TaoChuDe',{
-                idmonhoc:this.state.idmonhoc
+              this.props.navigation.navigate('TaoChuDe', {
+                idmonhoc: this.state.idmonhoc,
               });
             }}
           />
         </View>
         <View style={{flex: 1}}>
-          <FlatList
-            style={styles.container}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.idchude}
-            data={this.state.listkhoahoc}
-            refreshing={this.state.listkhoahoc}
-            extraData={this.state.listkhoahoc}
-            renderItem={({item, index}) => (
-              <View style={styles.wrapper}>
-                <View style={{flex: 1}}>
-                  <View style={{marginRight: Sizes.s50, flexDirection: 'row'}}>
-                    <UserAvatar
-                      style={{width: Sizes.s140, height: Sizes.s140}}
-                      name={item.tenchude}
-                      bgColors={['#3498db', '#34495e', '#e67e22']}
-                    />
-                    <Text style={styles.title}>Môn học: {item.tenchude}</Text>
+          {this.state.listkhoahoc === '' ? (
+            <View
+              style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+              <Image
+                source={require('../../../res/images/404.png')}
+                style={{
+                  height: Sizes.s340 + Sizes.s340,
+                  width: Sizes.s340 + Sizes.s340,
+                  resizeMode: 'contain',
+                }}
+              />
+              <Text style={{fontSize: Sizes.s40}}>
+                Hiện tại chưa có chủ đề được tạo
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              style={styles.container}
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item) => item.idchude}
+              data={this.state.listkhoahoc}
+              refreshing={this.state.listkhoahoc}
+              extraData={this.state.listkhoahoc}
+              renderItem={({item, index}) => (
+                <View style={styles.wrapper}>
+                  <View style={{flex: 1}}>
+                    <View
+                      style={{marginRight: Sizes.s50, flexDirection: 'row'}}>
+                      <UserAvatar
+                        style={{width: Sizes.s140, height: Sizes.s140}}
+                        name={item.tenchude}
+                        bgColors={['#3498db', '#34495e', '#e67e22']}
+                      />
+                      <Text style={styles.title}>Môn học: {item.tenchude}</Text>
+                    </View>
                   </View>
                 </View>
-
-                <View>
-                  <TouchableOpacity
-                    //onPress={() => this.RBSheet.open()}
-
-                    onPress={() => this[RBSheet + index].open()}>
-                    <Image
-                      source={require('../../../res/images/ic_private_edit.png')}
-                      style={{
-                        height: Sizes.s70,
-                        width: Sizes.s70,
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </TouchableOpacity>
-                  {/* bottom sheet */}
-                  <View>
-                    <RBSheet
-                      // ref={(ref, item) => {
-                      //   this.RBSheet = ref;
-                      // }}
-                      ref={(ref) => {
-                        this[RBSheet + index] = ref;
-                      }}
-                      height={Sizes.s340}
-                      openDuration={Sizes.s260}
-                      customStyles={{
-                        container: {
-                          marginTop: Sizes.s40,
-                        },
-                      }}>
-                      <View
-                        style={{
-                          marginTop: Sizes.s40,
-                          marginHorizontal: Sizes.s30,
-                        }}>
-                        <TouchableOpacity
-                          onPress={() =>
-                            this.props.navigation.navigate('CapNhatMonHoc', {
-                              idmonhoc: item.idmonhoc,
-                              tenmonhoc: item.tenmonhoc,
-                              sotinchi: item.sotinchi,
-                              sotiet: item.sotiet,
-                            })
-                          }>
-                          <View style={{flexDirection: 'row'}}>
-                            <Image
-                              source={require('../../../res/images/edits.png')}
-                              style={{
-                                height: Sizes.s70,
-                                width: Sizes.s70,
-                                resizeMode: 'contain',
-                              }}
-                            />
-                            <Text
-                              style={{
-                                marginTop: Sizes.s10,
-                                marginLeft: Sizes.s10,
-                                fontSize: Sizes.s40,
-                              }}>
-                              Chỉnh sửa thông tin
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                          onPress={() =>
-                            this.props.navigation.navigate('ThongTinMonHoc', {
-                              idmonhoc: item.idmonhoc,
-                              tenmonhoc: item.tenmonhoc,
-                              sotinchi: item.sotinchi,
-                              sotiet: item.sotiet,
-                            })
-                          }>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              marginTop: Sizes.s40,
-                            }}>
-                            <Image
-                              source={require('../../../res/images/infos.png')}
-                              style={{
-                                height: Sizes.s70,
-                                width: Sizes.s70,
-                                resizeMode: 'contain',
-                              }}
-                            />
-                            <Text
-                              style={{
-                                marginTop: Sizes.s10,
-                                marginLeft: Sizes.s10,
-                                fontSize: Sizes.s40,
-                              }}>
-                              Thông tin môn học
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    </RBSheet>
-                  </View>
-                </View>
-              </View>
-            )}
-          />
+              )}
+            />
+          )}
         </View>
       </View>
     );

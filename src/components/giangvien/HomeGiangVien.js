@@ -20,25 +20,17 @@ export default class HomeGiangVien extends React.Component {
       <ImageBackground
         source={require('../../res/images/bg.jpg')}
         style={styles.image}>
-        <Header title="CAO ĐẲNG KỸ THUẬT CAO THẮNG" />
         <View style={styles.viewavatar}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ThongTinTaiKhoan')}>
+         
             <Image
               source={{
                 uri: `${serverpic}/${userProfile.data.hinhanh}`,
               }}
               style={styles.avatar}
             />
-          </TouchableOpacity>
           <Text style={styles.textavatar}>{userProfile.data.hovaten}</Text>
         </View>
-        <View style={styles.lichsuview}>
-          <Image
-            style={styles.imagelichsu}
-            source={require('../../res/images/lichsu.png')}
-          />
-        </View>
+     
         <View style={styles.chucnangview}>
           <Text style={styles.txtchucnang}>
             Xin chào, Giảng viên vui lòng chọn tính năng ?
@@ -168,7 +160,7 @@ const styles = StyleSheet.create({
   },
   chucnangview: {
     flex: 1,
-    marginTop: Sizes.s30,
+    marginTop: Sizes.s340+Sizes.s160,
     marginHorizontal: Sizes.s30,
   },
   txtchucnang: {

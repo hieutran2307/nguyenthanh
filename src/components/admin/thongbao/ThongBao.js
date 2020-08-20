@@ -63,19 +63,10 @@ export default class ThongBao extends React.Component {
                style={styles.img}
              />
              <Text style={styles.textthongbao}>
-               Hiện tại chưa có danh sách lớp học phần trong lớp này.
+              Hiện tại chưa có thông báo nào
              </Text>
 
-             <TouchableOpacity
-               style={styles.btn}
-               onPress={() =>
-                 this.props.navigation.navigate('ThemLopHocPhan',{
-                   id:this.state.idlop,
-                   tenlop:this.state.tenlop
-                 })
-               }>
-               <Text style={styles.txtbtn}>TẠO LỚP HỌC PHẦN</Text>
-             </TouchableOpacity>
+            
            </View>
         ):
         <FlatList

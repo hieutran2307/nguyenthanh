@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   FlatList,
+  RefreshControl
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
@@ -25,32 +26,58 @@ export default class GVDanhSachCauHoi extends React.Component {
     this.state = {
       idchude: this.props.navigation.getParam('idchude'),
       danhsachcauhoi: '',
+      refreshing: false,
     };
+    this.GetData();
   }
-  componentDidMount() {
-    fetch(
+  GetData = () => {
+    //Service to get the data from the server to render
+    return fetch(
       `${API_PUBLIC}/kiemtra/danhsachcauhoi.php?idchude=${this.state.idchude}`,
     )
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log('danh sach cau hoi', responseJson);
         this.setState({
-          danhsachcauhoi: responseJson,
+          refreshing: false,
+          dataSource: responseJson,
         });
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+  ListViewItemSeparator = () => {
+    return (
+      //returning the listview item saparator view
+      <View
+        style={{
+          height: 0.2,
+          width: '90%',
+          backgroundColor: '#808080',
+        }}
+      />
+    );
+  };
+  onRefresh() {
+    this.setState({dataSource: []});
+    this.GetData();
   }
   render() {
     console.log('get id chu de', this.state.idchude);
+    if (this.state.refreshing) {
+      return (
+        <View style={{flex: 1, paddingTop: 20}}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
             title="Danh sách câu hỏi"
             onPressBackButton={() => {
-              this.props.navigation.goBack('');
+              this.props.navigation.navigate('HomeGiangVien');
             }}
             onPressShowMenu={() => {
               this.props.navigation.navigate('TaoCauHoi', {
@@ -60,7 +87,7 @@ export default class GVDanhSachCauHoi extends React.Component {
           />
         </View>
         <View style={{flex: 1}}>
-          {this.state.danhsachcauhoi === '' ? (
+          {this.state.dataSource === '' ? (
             <View
               style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
               <Image
@@ -83,10 +110,11 @@ export default class GVDanhSachCauHoi extends React.Component {
             </View>
           ) : (
             <FlatList
+              showsVerticalScrollIndicator={false}
               keyExtractor={(item) => item.idchude}
               style={styles.container}
-              data={this.state.danhsachcauhoi}
-              refreshing={this.state.danhsachcauhoi}
+              data={this.state.dataSource}
+              ItemSeparatorComponent={this.ListViewItemSeparator}
               renderItem={({item}) => (
                 <View style={styles.wrapper}>
                   <Text style={styles.title}>Câu hỏi: {item.tencauhoi}</Text>
@@ -97,8 +125,15 @@ export default class GVDanhSachCauHoi extends React.Component {
                   <Text style={styles.title}>Kết quả: {item.dapan}</Text>
                 </View>
               )}
+              refreshControl={
+                <RefreshControl
+                  refreshing={this.state.refreshing}
+                  onRefresh={this.onRefresh.bind(this)}
+                />
+              }
             />
           )}
+       
         </View>
       </View>
     );

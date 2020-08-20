@@ -50,7 +50,6 @@ import GVDanhSachLopHocPhan from '../components/giangvien/monhoc/GVDanhSachLopHo
 import GVDanhSachChuDe from '../components/giangvien/monhoc/GVDanhSachChuDe';
 import TaoChuDe from '../components/giangvien/monhoc/TaoChuDe';
 import GVDanhSachCauHoi from '../components/giangvien/monhoc/GVDanhSachCauHoi';
-import TaoCauHoi from '../components/giangvien/monhoc/TaoCauHoi';
 import GVThongTinMonHoc from '../components/giangvien/monhoc/GVThongTinMonHoc';
 
 // tạo bài kiểm tra
@@ -159,6 +158,89 @@ const TabNavigatorAdmin = createBottomTabNavigator(
   }
 );
 const TabAdmin = createAppContainer(TabNavigatorAdmin);
+
+// tab giang vien
+
+const TabNavigatorGiangVien = createBottomTabNavigator(
+  {
+    
+    HomeApp: {
+      screen: HomeGiangVien,
+      navigationOptions: {
+        tabBarLabel: "Tổng quan",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+                source={require("../res/images/tongquan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/tongquan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+    AdminThongBao: {
+      screen: ThongBao,
+      navigationOptions: {
+        tabBarLabel: "Thông Báo",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/notification2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/notification.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+    AdminThongTinTaiKhoan: {
+      screen: ThongTinTaiKhoan,
+      navigationOptions: {
+        tabBarLabel: "Tài khoản",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/user_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/user_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: "#4390DF",
+      inactiveTintColor: "#707070",
+      style: {
+        paddingTop: 11,
+        paddingBottom: 10,
+        height: 63,
+      },
+    },
+  }
+);
+const TabGiangVien = createAppContainer(TabNavigatorGiangVien);
 
 
 const TabNavigatorLopHoc = createBottomTabNavigator(
@@ -469,7 +551,7 @@ HomeAdmin:{
     
   //============= chuc nang giang  ven=================//
   HomeGiangVien:{
-    screen:HomeGiangVien
+    screen:TabGiangVien
   },
   QuanLyBaiKiemTra:{
     screen:QuanLyBaiKiemTra
@@ -490,9 +572,7 @@ HomeAdmin:{
   GVDanhSachCauHoi:{
     screen:GVDanhSachCauHoi
   },
-  TaoCauHoi:{
-    screen:TaoCauHoi
-  },
+
   DanhSachKiemTra:{
     screen:DanhSachKiemTra
   },

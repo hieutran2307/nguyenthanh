@@ -170,13 +170,15 @@ export default class DanhSachKiemTra extends React.Component {
       .then((responseData) => {
         console.log("data tra ve gi day", responseData)
         if (responseData.statusCode === '200') {
-          this.props.navigation.navigate('GVDanhSachCauHoi');
+          this.props.navigation.navigate('GVDanhSachCauHoi',{
+            idchude: this.state.idchude,
+          });
         }
       });
   }
   render() {
     const {selectedItems, selectedItemsMonHoc} = this.state;
-    console.log("id mon hoc",this.state.idchude)
+    console.log("id mon hocaaaa",this.state.idchude)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
