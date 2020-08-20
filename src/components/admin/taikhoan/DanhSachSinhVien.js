@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   Dimensions,
   TouchableOpacity,
-  ImageBackground,
+  RefreshControl,
   FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
@@ -21,37 +21,48 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {CheckBox, SearchBar} from 'react-native-elements';
 import UserAvatar from 'react-native-user-avatar';
 
-export default class DanhSachSinhVien extends React.Component {
+export default class DanhSachSinhVien  extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      DanhSachSinhVien: [],
       data: [],
       isOpen: false,
     };
     this.arrayholder = [];
+     this.GetData();
   }
-  componentDidMount() {
-    this.getData();
-  }
-  getData = () => {
-    const url = `${API_PUBLIC}/kiemtra/danhsachsinhvien.php`;
-    this.setState({loading: true});
-
-    fetch(url)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log('dddd', res);
+  GetData = () => {
+    //Service to get the data from the server to render
+    return fetch(`${API_PUBLIC}/kiemtra/danhsachsinhvien.php`)
+      .then((response) => response.json())
+      .then((responseJson) => {
         this.setState({
-          data: res,
-          error: res.error || null,
-          loading: false,
+          refreshing: false,
+          dataSource: responseJson,
         });
-        this.arrayholder = res;
       })
       .catch((error) => {
-        this.setState({error, loading: false});
+        console.error(error);
       });
   };
+  ListViewItemSeparator = () => {
+    return (
+      //returning the listview item saparator view
+      <View
+        style={{
+          height: 0.2,
+          width: '90%',
+          backgroundColor: '#808080',
+        }}
+      />
+    );
+  };
+  onRefresh() {
+    this.setState({dataSource: []});
+    this.GetData();
+  }
+
   searchFilterFunction = (text) => {
     this.setState({
       value: text,
@@ -68,6 +79,13 @@ export default class DanhSachSinhVien extends React.Component {
     });
   };
   render() {
+    if (this.state.refreshing) {
+      return (
+        <View style={{flex: 1, paddingTop: 20}}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     console.log('data', this.state.listkhoahoc);
     return (
       <View style={styles.container}>
@@ -77,6 +95,7 @@ export default class DanhSachSinhVien extends React.Component {
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}
+
             onPressShowMenu={() => {
               this.props.navigation.navigate('ThemSinhVien');
             }}
@@ -85,7 +104,7 @@ export default class DanhSachSinhVien extends React.Component {
         <View style={{flex: 1}}>
           <SearchBar
             containerStyle={styles.search}
-            placeholder="Nhập tên sinh viên...."
+            placeholder="Nhập tên giảng viên...."
             lightTheme
             round
             onChangeText={(text) => this.searchFilterFunction(text)}
@@ -95,9 +114,10 @@ export default class DanhSachSinhVien extends React.Component {
           <FlatList
             style={styles.container}
             showsVerticalScrollIndicator={false}
+            data={this.state.dataSource}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            enableEmptySections={true}
             keyExtractor={(item) => item.id}
-            data={this.state.data}
-            refreshing={this.state.data}
             renderItem={({item, index}) => (
               <View style={styles.wrapper}>
                 <View style={{flex: 1}}>
@@ -110,9 +130,85 @@ export default class DanhSachSinhVien extends React.Component {
                     <Text style={styles.title}>{item.name}</Text>
                   </View>
                 </View>
-                <View></View>
+                <View>
+                  <TouchableOpacity
+                    onPress={() => this[RBSheet + index].open()}>
+                    <Image
+                      source={require('../../../res/images/ic_private_edit.png')}
+                      style={{
+                        height: Sizes.s70,
+                        width: Sizes.s70,
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </TouchableOpacity>
+                  {/* bottom sheet */}
+                  <View>
+                    <RBSheet
+                      ref={(ref) => {
+                        this[RBSheet + index] = ref;
+                      }}
+                      height={Sizes.s340}
+                      openDuration={Sizes.s260}
+                      customStyles={{
+                        container: {
+                          marginTop: Sizes.s40,
+                        },
+                      }}>
+                      <View
+                        style={{
+                          marginTop: Sizes.s40,
+                          marginHorizontal: Sizes.s30,
+                        }}>
+                        
+                        <TouchableOpacity
+                          onPress={() =>
+                            this.props.navigation.navigate('TABThongTinGV', {
+                              idgv:item.id,
+                              ngaysinh:item.ngaysinh,
+                              diachi:item.diachi,
+                              sodienthoai:item.sodienthoai,
+                              email:item.email,
+                              tengv:item.name,
+                              maso:item.maso
+                            })
+                          }>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              marginTop: Sizes.s40,
+                            }}>
+                            <Image
+                              source={require('../../../res/images/infos.png')}
+                              style={{
+                                height: Sizes.s70,
+                                width: Sizes.s70,
+                                resizeMode: 'contain',
+                              }}
+                            />
+                            <Text
+                              style={{
+                                marginTop: Sizes.s10,
+                                marginLeft: Sizes.s10,
+                                fontSize: Sizes.s40,
+                              }}>
+                              Thông tin giảng viên
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </View>
+                    </RBSheet>
+                  </View>
+                </View>
               </View>
             )}
+            refreshControl={
+              <RefreshControl
+                //refresh control used for the Pull to Refresh
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh.bind(this)}
+              />
+            }
           />
         </View>
       </View>

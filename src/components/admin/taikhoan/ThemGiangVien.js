@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Dimensions,
   TextInput,
+  FlatList
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
@@ -29,13 +30,55 @@ export default class ThemGiangVien extends React.Component {
       sodienthoai: '',
       email: '',
       maso: '',
-      matkhau: '',
+      matkhau: '123123',
       idnhom: 2,
       hinhanh: '',
-      idlop: '',
+      idlop: '6',
       idlophocphan: '',
+      data: [],
+        checked: [],
+        arrayDetail:[]
     };
+    this.arrayholder = [];
+
   }
+//id  lop
+checkItem = item => {
+  const { checked } = this.state;
+
+  if (!checked.includes(item)) {
+    this.setState({ checked: [...checked, item],
+          arrayDetail: [{
+        ...checked,
+        "idlop":item,
+      }]
+    });
+  } else {
+    this.setState({ checked: checked.filter(a => a !== item) });
+  }
+};
+
+getDataLop = () => {
+  const url = `${API_PUBLIC}/kiemtra/danhsachlop.php`;
+  this.setState({ loading: true });
+
+  fetch(url)
+    .then((res) => res.json())
+    .then((res) => {
+        console.log("dddd", res)
+      this.setState({
+        data: res,
+        error: res.error || null,
+        loading: false,
+      });
+      this.arrayholder = res;
+    })
+    .catch((error) => {
+      this.setState({ error, loading: false });
+    });
+};
+
+
   hovatenChange = (value) => {
     this.setState({
       hovaten: value,
@@ -75,6 +118,7 @@ export default class ThemGiangVien extends React.Component {
     const max = 9000000;
     const maso = Math.floor(Math.random() * max) + 1;
     this.setState({maso: this.state.maso + maso});
+    this.getDataLop();
   }
   // gui du lieu len server
   async onSubmitSteps() {
@@ -94,8 +138,8 @@ export default class ThemGiangVien extends React.Component {
         matkhau: this.state.matkhau,
         idnhom: 2,
         hinhanh: '',
-        idlop: '',
-        idlophocphan: '',
+        idlop: 6,
+        idlophocphan: 2,
       }),
     })
       .then((response) => response.json())
@@ -107,6 +151,7 @@ export default class ThemGiangVien extends React.Component {
       });
   }
   render() {
+    console.log("get id lop nha", this.state.idlop)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -150,7 +195,7 @@ export default class ThemGiangVien extends React.Component {
                 <View style={{marginTop: Sizes.s20}}>
                   <View style={styles.labelContainer}>
                     <Text caption medium style={styles.label}>
-                      Thông tin liên hệ
+                      Địa chỉ
                     </Text>
                   </View>
                   <TextInput
@@ -216,6 +261,51 @@ export default class ThemGiangVien extends React.Component {
               </View>
               <View></View>
             </ProgressStep>
+
+
+
+            <ProgressStep
+              label="Lớp học"
+              scrollViewProps={this.defaultScrollViewProps}>
+              
+            
+
+              <FlatList
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            keyExtractor={(item) => item.idlop}
+            data={this.state.data}
+            refreshing={this.state.data}
+            renderItem={({item, index}) => (
+              <View style={styles.wrapper}>
+                <View style={{flex: 1}}>
+                  <View style={{marginRight: Sizes.s50, flexDirection: 'row'}}>
+                    <UserAvatar
+                      size={Sizes.s100}
+                      name={item.tenlop}
+                      bgColors={['#3498db', '#34495e', '#e67e22']}
+                    />
+                    <Text style={styles.title}>{item.tenlop}</Text>
+                  </View>
+                </View>
+                <View>
+                <CheckBox
+                            
+                            onPress={() => this.checkItem(item.idlop, idlop=item.idlop)}
+                            checked={this.state.checked.includes(item.idlop, idlop=item.idlop)}
+                            />
+                  </View>
+
+              </View>
+             
+            )}
+          />
+             
+            </ProgressStep>
+
+
+
+
             <ProgressStep
               label="Xác nhận"
               onPrevious={this.onPrevStep}
@@ -313,7 +403,7 @@ export default class ThemGiangVien extends React.Component {
                 </View>
 
                 <View style={{alignItems: 'flex-end', marginRight: Sizes.s40}}>
-                  <Text style={styles.txttitles}>{this.state.diachi}</Text>
+                  <Text style={styles.txttitles}>{this.state.email}</Text>
                 </View>
               </View>
 
@@ -396,5 +486,15 @@ const styles = StyleSheet.create({
   txttitles: {
     fontSize: Sizes.s35,
     marginTop: Sizes.s50,
+  },
+  wrapper: {
+    width: width - 20,
+    //backgroundColor: '#edf7ff',
+    margin: 10,
+    shadowOffset: {width: 0, height: 3},
+    shadowOpacity: 0.2,
+    padding: 10,
+    paddingTop: 0,
+    flexDirection: 'row',
   },
 });

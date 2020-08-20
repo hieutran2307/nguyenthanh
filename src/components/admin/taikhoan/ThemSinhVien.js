@@ -94,8 +94,9 @@ export default class ThemSinhVien extends React.Component {
         matkhau: this.state.matkhau,
         idnhom: 3,
         hinhanh: '',
-        idlop: '',
-        idlophocphan: '',
+        idlop: 6,
+        idlophocphan: 2,
+        
       }),
     })
       .then((response) => response.json())

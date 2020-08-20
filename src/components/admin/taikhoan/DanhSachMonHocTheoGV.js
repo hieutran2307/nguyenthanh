@@ -4,12 +4,9 @@ import {
   Image,
   View,
   Text,
-  ScrollView,
   StyleSheet,
-  TouchableHighlight,
   Dimensions,
-  TouchableOpacity,
-  ImageBackground,
+  RefreshControl,
   FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
@@ -27,20 +24,40 @@ export default class DanhSachMonHocTheoGV extends React.Component {
       listkhoahoc: [],
       refreshing: false,
       idgv: this.props.navigation.getParam('idgv'),
-
     };
+    this.GetData();
   }
-  componentDidMount() {
-    fetch(`${API_PUBLIC}/kiemtra/danhsachmonhocgv.php?idthanhvien=${this.state.idgv}`)
+  GetData = () => {
+    //Service to get the data from the server to render
+    return fetch(
+      `${API_PUBLIC}/kiemtra/danhsachmonhocgv.php?idthanhvien=${this.state.idgv}`,
+    )
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
-          listkhoahoc: responseJson,
+          refreshing: false,
+          dataSource: responseJson,
         });
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+  ListViewItemSeparator = () => {
+    return (
+      //returning the listview item saparator view
+      <View
+        style={{
+          height: 0.2,
+          width: '90%',
+          backgroundColor: '#808080',
+        }}
+      />
+    );
+  };
+  onRefresh() {
+    this.setState({dataSource: []});
+    this.GetData();
   }
   togglePanel() {
     this.setState({
@@ -49,7 +66,13 @@ export default class DanhSachMonHocTheoGV extends React.Component {
   }
 
   render() {
-    console.log('id giang vien mon hoc', this.state.idgv);
+    if (this.state.refreshing) {
+      return (
+        <View style={{flex: 1, paddingTop: 20}}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -57,24 +80,20 @@ export default class DanhSachMonHocTheoGV extends React.Component {
             title="Danh sách môn học"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
-            }}    
-            
-            
+            }}
             onPressShowMenu={() => {
-                this.props.navigation.navigate('ThemMonHocGV',{
-                  idgv:this.state.idgv
-                });
-              }}
+              this.props.navigation.navigate('ThemMonHocGV', {
+                idgv: this.state.idgv,
+              });
+            }}
           />
         </View>
         <View style={{flex: 1}}>
           <FlatList
             style={styles.container}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.idmonhoc}
-            data={this.state.listkhoahoc}
-            refreshing={this.state.listkhoahoc}
-            extraData={this.state.listkhoahoc}
+            data={this.state.dataSource}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            enableEmptySections={true}
             renderItem={({item, index}) => (
               <View style={styles.wrapper}>
                 <View style={{flex: 1}}>
@@ -87,11 +106,15 @@ export default class DanhSachMonHocTheoGV extends React.Component {
                     <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
                   </View>
                 </View>
-
-                
-                
               </View>
             )}
+            refreshControl={
+              <RefreshControl
+                //refresh control used for the Pull to Refresh
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh.bind(this)}
+              />
+            }
           />
         </View>
       </View>

@@ -9,7 +9,7 @@ import {
   TouchableHighlight,
   Dimensions,
   TouchableOpacity,
-  ImageBackground,
+  RefreshControl,
   FlatList,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
@@ -30,29 +30,39 @@ export default class DanhSachGiangVien extends React.Component {
       isOpen: false,
     };
     this.arrayholder = [];
+     this.GetData();
   }
-  componentDidMount() {
-    this.getData();
-  }
-  getData = () => {
-    const url = `${API_PUBLIC}/kiemtra/danhsachgiangvien.php`;
-    this.setState({loading: true});
-
-    fetch(url)
-      .then((res) => res.json())
-      .then((res) => {
-        console.log('dddd', res);
+  GetData = () => {
+    //Service to get the data from the server to render
+    return fetch(`${API_PUBLIC}/kiemtra/danhsachgiangvien.php`)
+      .then((response) => response.json())
+      .then((responseJson) => {
         this.setState({
-          data: res,
-          error: res.error || null,
-          loading: false,
+          refreshing: false,
+          dataSource: responseJson,
         });
-        this.arrayholder = res;
       })
       .catch((error) => {
-        this.setState({error, loading: false});
+        console.error(error);
       });
   };
+  ListViewItemSeparator = () => {
+    return (
+      //returning the listview item saparator view
+      <View
+        style={{
+          height: 0.2,
+          width: '90%',
+          backgroundColor: '#808080',
+        }}
+      />
+    );
+  };
+  onRefresh() {
+    this.setState({dataSource: []});
+    this.GetData();
+  }
+
   searchFilterFunction = (text) => {
     this.setState({
       value: text,
@@ -69,6 +79,13 @@ export default class DanhSachGiangVien extends React.Component {
     });
   };
   render() {
+    if (this.state.refreshing) {
+      return (
+        <View style={{flex: 1, paddingTop: 20}}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
     console.log('data', this.state.listkhoahoc);
     return (
       <View style={styles.container}>
@@ -87,7 +104,7 @@ export default class DanhSachGiangVien extends React.Component {
         <View style={{flex: 1}}>
           <SearchBar
             containerStyle={styles.search}
-            placeholder="Nhập tên giảng viên...."
+            placeholder="Nhập tên sinh viên...."
             lightTheme
             round
             onChangeText={(text) => this.searchFilterFunction(text)}
@@ -97,9 +114,10 @@ export default class DanhSachGiangVien extends React.Component {
           <FlatList
             style={styles.container}
             showsVerticalScrollIndicator={false}
+            data={this.state.dataSource}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            enableEmptySections={true}
             keyExtractor={(item) => item.id}
-            data={this.state.data}
-            refreshing={this.state.data}
             renderItem={({item, index}) => (
               <View style={styles.wrapper}>
                 <View style={{flex: 1}}>
@@ -184,6 +202,13 @@ export default class DanhSachGiangVien extends React.Component {
                 </View>
               </View>
             )}
+            refreshControl={
+              <RefreshControl
+                //refresh control used for the Pull to Refresh
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh.bind(this)}
+              />
+            }
           />
         </View>
       </View>
