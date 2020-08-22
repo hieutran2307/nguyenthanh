@@ -19,24 +19,33 @@ import {/* userProfile,*/ serverpic} from '../../../config/settings';
 export default class ThongTinTaiKhoan extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <View style={[styles.viewInfo]}>
-          <Headers
-            title="Thông tin tài khoản"
-            onPressBackButton={() => {
-              this.props.navigation.goBack('');
-            }}
-          />
-
-          <Image
-            source={{
-              uri: `${serverpic}/${userProfile.data.hinhanh}`,
-            }}
-            style={styles.avatar}
-          />
-          <Text style={styles.textHeader}>{userProfile.data.hovaten}</Text>
-          <Text style={styles.textKhoaHeader}>{userProfile.data.khoa}</Text>
-
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <View style={styles.viewInfo}>
+            <View
+              style={{
+                width: '100%',
+                paddingTop: Sizes.s50,
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontSize: Sizes.h52,
+                  fontWeight: 'bold',
+                  color: '#FFF',
+                }}>
+                Thông tin tài khoản
+              </Text>
+            </View>
+            <Image
+              source={{
+                uri: `${serverpic}/${userProfile.data.hinhanh}`,
+              }}
+              style={styles.avatar}
+            />
+            <Text style={styles.textHeader}>{userProfile.data.hovaten}</Text>
+            <Text style={styles.textKhoaHeader}>{userProfile.data.khoa}</Text>
+          </View>
           <View style={styles.viewThanhTich}>
             <View style={styles.fullField}>
               <View style={styles.colMainLeft}>
@@ -48,7 +57,7 @@ export default class ThongTinTaiKhoan extends React.Component {
                         style={styles.imageBoxChucNang}
                       />
                     </View>
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{paddingLeft: Sizes.s15}}>
                       <Text style={styles.textchucnang}>
                         {userProfile.data.khoahoc}
                       </Text>
@@ -67,7 +76,7 @@ export default class ThongTinTaiKhoan extends React.Component {
                         style={styles.imageBoxChucNang}
                       />
                     </View>
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{paddingLeft: Sizes.s15}}>
                       <Text style={styles.textchucnang}>
                         {' '}
                         {userProfile.data.giohoctap}{' '}
@@ -88,7 +97,7 @@ export default class ThongTinTaiKhoan extends React.Component {
                         style={styles.imageBoxChucNang}
                       />
                     </View>
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{paddingLeft: Sizes.s15}}>
                       <Text style={styles.textchucnang}>
                         {' '}
                         {userProfile.data.thuhang}{' '}
@@ -108,7 +117,7 @@ export default class ThongTinTaiKhoan extends React.Component {
                         style={styles.imageBoxChucNang}
                       />
                     </View>
-                    <View style={{flexDirection: 'column'}}>
+                    <View style={{paddingLeft: Sizes.s15}}>
                       <Text style={styles.textchucnang}>
                         {' '}
                         {userProfile.data.tracnghiem}{' '}
@@ -121,15 +130,31 @@ export default class ThongTinTaiKhoan extends React.Component {
             </View>
           </View>
 
-          <View style={styles.thongtin}>
+          <View style={{flex: 1, paddingBottom: Sizes.s20}}>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.viewThongTin}>
-                <View style={{flexDirection: 'row'}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: Sizes.s30,
+                  }}>
                   <Image
-                    source={require('../../../res/images/userinfo.png')}
-                    style={{width: Sizes.s100, height: Sizes.s100}}
+                    source={require('../../../res/images/school.png')}
+                    style={{
+                      width: Sizes.s100,
+                      height: Sizes.s100,
+                      resizeMode: 'contain',
+                    }}
                   />
-                  <Text style={{fontSize: Sizes.s40}}>Thông tin cá nhân</Text>
+                  <Text
+                    style={{
+                      fontSize: Sizes.h48,
+                      fontWeight: 'bold',
+                      marginLeft: Sizes.s20,
+                    }}>
+                    Thông tin cá nhân
+                  </Text>
                 </View>
 
                 <View style={styles.fullField}>
@@ -191,12 +216,29 @@ export default class ThongTinTaiKhoan extends React.Component {
               </View>
 
               <View style={styles.viewThongTin}>
-                <View style={{flexDirection: 'row'}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    paddingHorizontal: Sizes.s30,
+                    marginTop: Sizes.s10,
+                  }}>
                   <Image
                     source={require('../../../res/images/school.png')}
-                    style={{width: Sizes.s100, height: Sizes.s100}}
+                    style={{
+                      width: Sizes.s100,
+                      height: Sizes.s100,
+                      resizeMode: 'contain',
+                    }}
                   />
-                  <Text style={{fontSize: Sizes.s40}}>Thông tin sinh viên</Text>
+                  <Text
+                    style={{
+                      fontSize: Sizes.h48,
+                      fontWeight: 'bold',
+                      marginLeft: Sizes.s20,
+                      marginTop: Sizes.s20,
+                    }}>
+                    Thông tin khác
+                  </Text>
                 </View>
 
                 <View style={styles.fullField}>
@@ -259,7 +301,7 @@ export default class ThongTinTaiKhoan extends React.Component {
             </ScrollView>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
@@ -268,15 +310,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   viewInfo: {
-    flex: 1 / 3,
+    flex: 1,
     backgroundColor: '#f06c5b',
   },
   viewAvatar: {},
   avatar: {
-    marginTop: Sizes.s160,
+    marginTop: Sizes.s100,
     width: Sizes.s160,
     height: Sizes.s160,
-    borderRadius: 100,
+    borderRadius: Sizes.s100,
     alignSelf: 'center',
   },
   textHeader: {
@@ -293,9 +335,8 @@ const styles = StyleSheet.create({
     color: '#FFFF',
   },
   viewThanhTich: {
-    marginTop: Sizes.s20,
-    marginHorizontal: Sizes.s30,
-    height: Sizes.s340 + Sizes.s100,
+    height: Sizes.s340 + Sizes.s70,
+    marginHorizontal: Sizes.s10,
     backgroundColor: '#ffffff',
     shadowColor: '#AFAEAF',
     shadowOffset: {
@@ -311,15 +352,16 @@ const styles = StyleSheet.create({
   },
   colMainLeft: {
     flex: 1,
-    marginRight: Sizes.s15,
+    marginLeft: Sizes.s10,
   },
   boxMain: {
     height: Sizes.s160,
     borderWidth: 0,
-    borderRadius: 8,
+    borderRadius: Sizes.s15,
     marginTop: Sizes.s30,
-    marginBottom: Sizes.s30,
-    elevation: Sizes.s25,
+    elevation: Sizes.s5,
+    marginHorizontal: Sizes.s10,
+    backgroundColor: '#FFF',
   },
   highLightBoxMain: {
     flexDirection: 'row',
@@ -332,13 +374,13 @@ const styles = StyleSheet.create({
   },
   colMainRight: {
     flex: 1,
-    marginLeft: Sizes.s15,
+    marginRight: Sizes.s10,
   },
   viewIonChucNang: {
     width: Sizes.s100,
     height: Sizes.s100,
     backgroundColor: '#f06955',
-    borderRadius: 100,
+    borderRadius: Sizes.s100,
   },
   textchucnang: {
     marginTop: Sizes.s20,
@@ -362,5 +404,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: Sizes.s30,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });

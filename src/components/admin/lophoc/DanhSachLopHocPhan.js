@@ -29,6 +29,9 @@ export default class DanhSachLopHocPhan extends React.Component {
     };
     this.GetData();
   }
+  componentDidUpdate() {
+    this.GetData();
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(
@@ -86,40 +89,37 @@ export default class DanhSachLopHocPhan extends React.Component {
           />
         </View>
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <FlatList
-              keyExtractor={(item) => item.idlop}
-              style={styles.container}
-              data={this.state.dataSource}
-              ItemSeparatorComponent={this.ListViewItemSeparator}
-              enableEmptySections={true}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate(
-                      'DanhSachSinhVIenLopHocPhan',
-                      {
-                        idlop: this.state.idlop,
-                        idlophocphan: item.idlophocphan,
-                      },
-                    )
-                  }>
-                  <View style={styles.wrapper}>
-                    <Text style={styles.title}>Lớp: {item.tenlop}</Text>
-                    <Text style={styles.title}>
-                      Lớp học phần: {item.tenhocphan}
-                    </Text>
-                    <Text style={styles.title}>Giáo viên: {item.giaovien}</Text>
-                    <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.refreshing}
-                  onRefresh={this.onRefresh.bind(this)}
-                />
-              }
-            />
+          <FlatList
+            keyExtractor={(item) => item.idlop}
+            style={styles.container}
+            data={this.state.dataSource}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            enableEmptySections={true}
+            renderItem={({item}) => (
+              <TouchableOpacity
+                onPress={() =>
+                  this.props.navigation.navigate('DanhSachSinhVIenLopHocPhan', {
+                    idlop: this.state.idlop,
+                    idlophocphan: item.idlophocphan,
+                  })
+                }>
+                <View style={styles.wrapper}>
+                  <Text style={styles.title}>Lớp: {item.tenlop}</Text>
+                  <Text style={styles.title}>
+                    Lớp học phần: {item.tenhocphan}
+                  </Text>
+                  <Text style={styles.title}>Giáo viên: {item.giaovien}</Text>
+                  <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.onRefresh.bind(this)}
+              />
+            }
+          />
         </View>
       </View>
     );

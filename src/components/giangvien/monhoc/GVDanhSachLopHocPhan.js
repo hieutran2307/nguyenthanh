@@ -27,8 +27,16 @@ export default class GVDanhSachLopHocPhan extends React.Component {
       danhsachhocphan: '',
     };
   }
+  componentDidUpdate(prevState){
+    if(prevState.danhsachhocphan !== this.state.danhsachhocphan){
+      this.GetData()
+    }
+  }
   componentDidMount() {
-    fetch(
+    this.GetData()
+  }
+  GetData = () =>{
+    return fetch(
       `${API_PUBLIC}/kiemtra/danhsachlophocphangv.php?idmonhoc=${this.state.idmonhoc}&idthanhvien=${userProfile.data.idthanhvien}`,
     )
       .then((response) => response.json())

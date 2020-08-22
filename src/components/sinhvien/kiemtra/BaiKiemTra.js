@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Button,
   Image,
@@ -13,109 +13,290 @@ import {
   FlatList,
   TextInput,
   Alert,
-} from 'react-native';
-import {SafeAreaView} from 'react-navigation';
-import {Sizes} from '@dungdang/react-native-basic';
-import Headers from '../../custom/Headers';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import {userProfile, API_PUBLIC} from '../../../config/settings';
-import UserAvatar from 'react-native-user-avatar';
-import {CheckBox, SearchBar} from 'react-native-elements';
-import MultiSelect from 'react-native-multiple-select';
+} from "react-native";
+import { SafeAreaView } from "react-navigation";
+import { Sizes } from "@dungdang/react-native-basic";
+import Headers from "../../custom/Headers";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { userProfile, API_PUBLIC } from "../../../config/settings";
+import UserAvatar from "react-native-user-avatar";
+import { CheckBox, SearchBar } from "react-native-elements";
+import MultiSelect from "react-native-multiple-select";
+import { arrayIsEmpty } from "@dungdang/react-native-basic/src/Functions";
 
 export default class BaiKiemTra extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      makiemtra: this.props.navigation.getParam('makiemtra'),
-      idkiemtra: this.props.navigation.getParam('idkiemtra'),
+      makiemtra: this.props.navigation.getParam("makiemtra"),
+      idkiemtra: this.props.navigation.getParam("idkiemtra"),
       thongtibaikiemtra: [],
-      danhsachcauhoi: [],
-      dapan: '',
+      danhsachcauhoi: '',
+      dapan: "",
       diemso: 0,
       checkeda: [],
       checkedb: [],
       checkedc: [],
       checkedd: [],
-      idcauhoi: '',
+      idcauhoi: "",
       point: 0,
+      vitri: 0,
+      minutes: 0,
+      seconds: 0,
+      time: 10,
+      // time: this.state.thongtibaikiemtra.thoigian,
+      startedTime: false,
+      ischeckdisplay: true,
     };
   }
-  checkItemketquaa = (item) => {
-    const {checkeda} = this.state;
+  timeOut() {
+    this.setState({
+        minutes: this.state.time
+    })
+    setInterval(() => {
+        if (this.state.startedTime === true) {
+            if (this.state.minutes >= 0) {
+                if (this.state.seconds > 0) {
+                    this.setState({
+                        seconds: this.state.seconds - 1,
+                    })
+                } else {
+                    this.setState({ minutes: this.state.minutes - 1, }),
+                        this.setState({ seconds: 59, })
+                }
+            } else if (this.state.minutes < 0) {
+                this.setState({ ischeckdisplay: true, startedTime: false})
+                this.nopbai()
+            }
+        }
+    }, 1000);
+}
 
-    if (!checkeda.includes(item)) {
+checkDisplay() {
+  this.setState({ ischeckdisplay: !this.state.ischeckdisplay }),
+      this.setState({ minutes: 0, seconds: 0 })
+}
+
+  checkItemketquaa = (danhsachcauhoi) => {
+    const { checkeda } = this.state;
+
+    if (!checkeda.includes(danhsachcauhoi)) {
       this.setState({
-        checkeda: [...checkeda, item],
-        idcauhoi: item,
+        checkeda: [...checkeda, danhsachcauhoi],
+        idcauhoi: danhsachcauhoi,
         dapanhchona: dapanhchona,
         ketquaa: ketquaa,
       });
-    } else
-    if ((this.state.dapanhchona === this.state.ketquaa)) {
+    } else if (this.state.dapanhchona === this.state.ketquaa) {
       this.setState({
-        point: this.state.point + 1,
+        point: this.state.point + 2,
       });
     } else {
-      this.setState({checkeda: checkeda.filter((a) => a !== item)});
+      this.setState({ checkeda: checkeda.filter((a) => a !== danhsachcauhoi) });
     }
   };
 
-  checkItemketquab = (item) => {
-    const {checkedb} = this.state;
+  checkItemketquab = (danhsachcauhoi) => {
+    const { checkedb } = this.state;
 
-    if (!checkedb.includes(item)) {
+    if (!checkedb.includes(danhsachcauhoi)) {
       this.setState({
-        checkedb: [...checkedb, item],
-        idcauhoi: item,
+        checkedb: [...checkedb, danhsachcauhoi],
+        idcauhoi: danhsachcauhoi,
         dapanhchonb: dapanhchonb,
         ketquab: ketquab,
       });
-    } else
-    if ((this.state.dapanhchonb === this.state.ketquab)) {
+    } else if (this.state.dapanhchonb === this.state.ketquab) {
       this.setState({
-        point: this.state.point + 1,
+        point: this.state.point + 2,
       });
     } else {
-      this.setState({checkedb: checkedb.filter((a) => a !== item)});
+      this.setState({ checkedb: checkedb.filter((a) => a !== danhsachcauhoi) });
     }
   };
-  checkItemketquac = (item) => {
-    const {checkedc} = this.state;
+  checkItemketquac = (danhsachcauhoi) => {
+    const { checkedc } = this.state;
 
-    if (!checkedc.includes(item)) {
+    if (!checkedc.includes(danhsachcauhoi)) {
       this.setState({
-        checkedc: [...checkedc, item],
-        idcauhoi: item,
+        checkedc: [...checkedc, danhsachcauhoi],
+        idcauhoi: danhsachcauhoi,
         dapanhchonc: dapanhchonc,
         ketquac: ketquac,
       });
-    } else
-    if ((this.state.dapanhchonc === this.state.ketquac)) {
+    } else if (this.state.dapanhchonc === this.state.ketquac) {
       this.setState({
-        point: this.state.point + 1,
+        point: this.state.point + 2,
       });
     } else {
-      this.setState({checkedc: checkedc.filter((a) => a !== item)});
+      this.setState({ checkedc: checkedc.filter((a) => a !== danhsachcauhoi) });
     }
   };
-  checkItemketquad = (item) => {
-    const {checkedd} = this.state;
+  checkItemketquad = (danhsachcauhoi) => {
+    const { checkedd } = this.state;
 
-    if (!checkedd.includes(item)) {
+    if (!checkedd.includes(danhsachcauhoi)) {
       this.setState({
-        checkedd: [...checkedd, item],
-        idcauhoi: item,
+        checkedd: [...checkedd, danhsachcauhoi],
+        idcauhoi: danhsachcauhoi,
         dapanhchond: dapanhchond,
         ketquad: ketquad,
       });
-    } else
-    if ((this.state.dapanhchond === this.state.ketquad)) {
+    } else if (this.state.dapanhchond === this.state.ketquad) {
       this.setState({
-        point: this.state.point + 1,
+        point: this.state.point + 2,
       });
     } else {
-      this.setState({checkedd: checkedd.filter((a) => a !== item)});
+      this.setState({
+        checkedd: checkedd.filter((a) => a !== danhsachcauhoi),
+      });
+    }
+  };
+
+  renderItem = () => {
+    const { danhsachcauhoi, vitri } = this.state;
+    let listQuestion = [];
+    if (!arrayIsEmpty(danhsachcauhoi)) {
+      vitri < danhsachcauhoi.length;
+      listQuestion.push(
+        <View
+          style={{
+            flex: 1,
+            width: "100%",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "#CCE5FF",
+              marginVertical: Sizes.s30,
+              marginHorizontal: Sizes.s15,
+              padding: Sizes.s30,
+              borderRadius: Sizes.s10,
+            }}
+          >
+            <Text style={{ fontSize: Sizes.h40 }}>Câu hỏi {vitri + 1}</Text>
+            <Text
+              style={{
+                marginTop: Sizes.s20,
+                fontSize: Sizes.h36,
+                textAlign: "center",
+              }}
+            >
+              {danhsachcauhoi[vitri].tencauhoi}
+            </Text>
+          </View>
+          <View style={styles.dapan}>
+            <View style={styles.wrapper}>
+              <CheckBox
+                onPress={() =>
+                  this.checkItemketquaa(
+                    danhsachcauhoi[vitri].idcauhoi,
+                    (dapanhchona = "a"),
+                    (ketquaa = danhsachcauhoi[vitri].dapan)
+                  )
+                }
+                checked={this.state.checkeda.includes(
+                  danhsachcauhoi[vitri].idcauhoi,
+                  (dapanhchona = danhsachcauhoi[vitri].a),
+                  (ketquaa = danhsachcauhoi[vitri].dapan)
+                )}
+              />
+
+              <Text
+                style={{
+                  fontSize: Sizes.h32,
+                  width: "80%",
+                  paddingVertical: Sizes.s30,
+                }}
+              >
+                {danhsachcauhoi[vitri].a}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.dapan}>
+            <View style={styles.wrapper}>
+              <CheckBox
+                onPress={() =>
+                  this.checkItemketquab(
+                    danhsachcauhoi[vitri].idcauhoi,
+                    (dapanhchonb = "b"),
+                    (ketquab = danhsachcauhoi[vitri].dapan)
+                  )
+                }
+                checked={this.state.checkedb.includes(
+                  danhsachcauhoi[vitri].idcauhoi,
+                  (dapanhchonb = "b"),
+                  (ketquab = danhsachcauhoi[vitri].dapan)
+                )}
+              />
+              <Text
+                style={{
+                  fontSize: Sizes.h32,
+                  width: "80%",
+                  paddingVertical: Sizes.s30,
+                }}
+              >
+                {danhsachcauhoi[vitri].b}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.dapan}>
+            <View style={styles.wrapper}>
+              <CheckBox
+                onPress={() =>
+                  this.checkItemketquac(
+                    danhsachcauhoi[vitri].idcauhoi,
+                    (dapanhchonc = "c"),
+                    (ketquac = danhsachcauhoi[vitri].dapan)
+                  )
+                }
+                checked={this.state.checkedc.includes(
+                  danhsachcauhoi[vitri].idcauhoi,
+                  (dapanhchonc = "c"),
+                  (ketquac = danhsachcauhoi[vitri].dapan)
+                )}
+              />
+              <Text
+                style={{
+                  fontSize: Sizes.h32,
+                  width: "80%",
+                  paddingVertical: Sizes.s30,
+                }}
+              >
+                {danhsachcauhoi[vitri].c}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.dapan}>
+            <View style={styles.wrapper}>
+              <CheckBox
+                onPress={() =>
+                  this.checkItemketquad(
+                    danhsachcauhoi[vitri].idcauhoi,
+                    (dapanhchond = "d"),
+                    (ketquad = danhsachcauhoi[vitri].dapan)
+                  )
+                }
+                checked={this.state.checkedd.includes(
+                  danhsachcauhoi[vitri].idcauhoi,
+                  (dapanhchond = "d"),
+                  (ketquad = danhsachcauhoi[vitri].dapan)
+                )}
+              />
+              <Text
+                style={{
+                  fontSize: Sizes.h32,
+                  width: "80%",
+                  paddingVertical: Sizes.s30,
+                }}
+              >
+                {danhsachcauhoi[vitri].d}
+              </Text>
+            </View>
+          </View>
+        </View>
+      );
+      return <ScrollView>{listQuestion}</ScrollView>;
     }
   };
 
@@ -123,10 +304,14 @@ export default class BaiKiemTra extends React.Component {
     fetch(`${API_PUBLIC}/thi/thongtinde.php?makiemtra=${this.state.makiemtra}`)
       .then((response) => response.json())
       .then((responseJson) => {
-        console.log('thong tin kiem tra', responseJson);
+        console.log("thong tin kiem tra", responseJson);
         this.setState({
           thongtibaikiemtra: responseJson,
-        });
+          startedTime: !this.state.startedTime,
+        }, () => {
+          this.checkDisplay()
+          this.timeOut()
+        })
       })
       .catch((error) => {
         console.error(error);
@@ -136,7 +321,7 @@ export default class BaiKiemTra extends React.Component {
 
   getData = () => {
     const url = `${API_PUBLIC}/thi/chitietbaithi.php?makiemtra=${this.state.makiemtra}`;
-    this.setState({loading: true});
+    this.setState({ loading: true });
 
     fetch(url)
       .then((res) => res.json())
@@ -149,34 +334,34 @@ export default class BaiKiemTra extends React.Component {
         this.arrdapan = res;
       })
       .catch((error) => {
-        this.setState({error, loading: false});
+        this.setState({ error, loading: false });
       });
   };
   handleChange(e) {
     let isChecked = e.target.checked;
     // do whatever you want with isChecked value
-    alert('dấd');
+    alert("dấd");
   }
-  nopbai(){
+  nopbai() {
     fetch(`${API_PUBLIC}/thi/chamdiem.php`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        idkiemtra:this.state.idkiemtra,
-        idthanhvien:userProfile.data.idthanhvien,
-        diemso:this.state.point
+        idkiemtra: this.state.idkiemtra,
+        idthanhvien: userProfile.data.idthanhvien,
+        diemso: this.state.point,
       }),
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log('data tra ve', responseData);
-        if (responseData.statusCode === '200') {
-          this.props.navigation.navigate('KetQuaThi',{
-            makiemtra:this.state.makiemtra,
-            diemso:this.state.point,
+        console.log("data tra ve", responseData);
+        if (responseData.statusCode === "200") {
+          this.props.navigation.navigate("KetQuaThi", {
+            makiemtra: this.state.makiemtra,
+            diemso: this.state.point,
           });
         }
       });
@@ -188,170 +373,155 @@ export default class BaiKiemTra extends React.Component {
           <Headers
             title="Bài Kiểm tra"
             onPressBackButton={() => {
-              this.props.navigation.goBack('');
+              this.props.navigation.goBack("");
             }}
           />
         </View>
         <View>
-          {this.state.thongtibaikiemtra.map((item) => (
-            <View style={styles.wrapper}>
-              <View style={{flexDirection: 'row'}}>
+          {
+          this.state.thongtibaikiemtra.map((item) => (
+            <View style={{
+              paddingHorizontal: Sizes.s30,
+              backgroundColor: '#E9E1E6',
+              paddingVertical: Sizes.s20,
+            }}>
+              <View style={{ flexDirection: "row" }}>
                 <UserAvatar
-                  style={{width: Sizes.s140, height: Sizes.s140}}
+                  style={{ width: Sizes.s140, height: Sizes.s140 }}
                   name={item.tenbaikiemtra}
-                  bgColors={['#3498db', '#34495e', '#e67e22']}
+                  bgColors={["#3498db", "#34495e", "#e67e22"]}
                 />
                 <View>
                   <Text style={styles.title}>
-                    Môn kiểm tra :{item.tenbaikiemtra}{' '}
+                    Môn kiểm tra :{item.tenbaikiemtra}{" "}
                   </Text>
                   <Text style={styles.title}>
-                    Thời gian: {item.thoigian} phút{' '}
+                    Thời gian: {this.state.time} phút{" "}
                   </Text>
+                  <View style={styles.time}>
+                      <Text style={styles.timeText}>{this.state.minutes} : {this.state.seconds}</Text>
+                  </View>
                 </View>
               </View>
             </View>
           ))}
         </View>
-        <View style={{flex: 1}}>
-          <FlatList
-            style={styles.container}
-            showsVerticalScrollIndicator={false}
-            keyExtractor={(item) => item.idlop}
-            data={this.state.danhsachcauhoi}
-            refreshing={this.state.danhsachcauhoi}
-            renderItem={({item, index}) => (
-              <View
-                style={{
-                  marginTop: Sizes.s40,
-                  flex: 1,
-                  marginHorizontal: Sizes.s30,
-                }}>
-                <Text style={{fontSize: Sizes.s40}}>Câu hỏi</Text>
+     {
+       this.state.danhsachcauhoi ===  '' ?(
+        <View
+        style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+        <Image
+          source={require('../../../res/images/errors.png')}
+          style={{
+            height: Sizes.s340 + Sizes.s340,
+            width: Sizes.s340 + Sizes.s340,
+            resizeMode: 'contain',
+          }}
+        />
+        <Text style={{fontSize: Sizes.s40}}>
+          Vui lòng chờ giảng viên xác nhận kiểm tra
+        </Text>
+      </View>
+       ):
+       <View style={{flex:1}}>
+         <View style={{ flex: 1 }}>{this.renderItem()}</View>
+<View
+  style={{
+    flexDirection: "row",
+    paddingHorizontal: Sizes.s50,
+    paddingVertical: Sizes.s15,
+    alignItems: "center",
+    backgroundColor: "#DDD",
+  }}
+>
+  {this.state.vitri === 0 ? (
+    <View style={{ width: "50%" }} />
+  ) : (
+    <View style={{ width: "50%" }}>
+      <TouchableOpacity
+        onPress={() => {
+          if (this.state.vitri < this.state.danhsachcauhoi.length) {
+            if (this.state.vitri > 0) {
+              this.setState({
+                vitri: this.state.vitri - 1,
+              });
+            }
+          }
+        }}
+        style={{
+          width: Sizes.s200,
+          backgroundColor: "#2674B7",
+          borderRadius: Sizes.s10,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: Sizes.h30,
+            paddingVertical: Sizes.s15,
+            textAlign: "center",
+            color: "#FFF",
+          }}
+        >
+          Câu trước
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )}
+  {this.state.vitri === 5 ? (
+    <View style={{ width: "50%" }} />
+  ) : (
+  <View style={{ width: "50%", alignItems: "flex-end" }}>
+    <TouchableOpacity
+      onPress={() => {
+        if (this.state.vitri < this.state.danhsachcauhoi.length) {
+          this.setState({
+            vitri: this.state.vitri + 1,
+          });
+        } else {
+        }
+      }}
+      style={{
+        width: Sizes.s200,
+        backgroundColor: "#2674B7",
+        borderRadius: Sizes.s10,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: Sizes.h30,
+          paddingVertical: Sizes.s15,
+          textAlign: "center",
+          color: "#FFF",
+        }}
+      >
+        Câu sau
+      </Text>
+    </TouchableOpacity>
+  </View>
+  )}
+</View>
+         </View>
 
-                <Text style={{marginTop: Sizes.s30}}>{item.tencauhoi}</Text>
-
-                <View style={styles.dapan}>
-                  <View style={styles.wrapper}>
-                    <CheckBox
-                      onPress={() =>
-                        this.checkItemketquaa(
-                          item.idcauhoi,
-                          (dapanhchona = 'a'),
-                          (ketquaa = item.dapan),
-                        )
-                      }
-                      checked={this.state.checkeda.includes(
-                        item.idcauhoi,
-                        (dapanhchona = item.a),
-                        (ketquaa = item.dapan),
-                      )}
-                    />
-
-                    <Text
-                      style={{
-                        fontSize: Sizes.s40,
-                        marginTop: Sizes.s10,
-                        marginLeft: Sizes.s20,
-                      }}>
-                      {item.a}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.dapan}>
-                  <View style={styles.wrapper}>
-                    <CheckBox
-                      onPress={() =>
-                        this.checkItemketquab(
-                          item.idcauhoi,
-                          (dapanhchonb = 'b'),
-                          (ketquab = item.dapan),
-                        )
-                      }
-                      checked={this.state.checkedb.includes(
-                        item.idcauhoi,
-                        (dapanhchonb = 'b'),
-                        (ketquab = item.dapan),
-                      )}
-                    />
-                    <Text
-                      style={{
-                        fontSize: Sizes.s40,
-                        marginTop: Sizes.s10,
-                        marginLeft: Sizes.s20,
-                      }}>
-                      {item.b}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.dapan}>
-                  <View style={styles.wrapper}>
-                    <CheckBox
-                      onPress={() =>
-                        this.checkItemketquac(
-                          item.idcauhoi,
-                          (dapanhchonc = 'c'),
-                          (ketquac = item.dapan),
-                        )
-                      }
-                      checked={this.state.checkedc.includes(
-                        item.idcauhoi,
-                        (dapanhchonc = 'c'),
-                        (ketquac = item.dapan),
-                      )}
-                    />
-                    <Text
-                      style={{
-                        fontSize: Sizes.s40,
-                        marginTop: Sizes.s10,
-                        marginLeft: Sizes.s20,
-                      }}>
-                      {item.c}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.dapan}>
-                  <View style={styles.wrapper}>
-                    <CheckBox
-                      onPress={() =>
-                        this.checkItemketquad(
-                          item.idcauhoi,
-                          (dapanhchond = 'd'),
-                          (ketquad = item.dapan),
-                        )
-                      }
-                      checked={this.state.checkedd.includes(
-                        item.idcauhoi,
-                        (dapanhchond = 'd'),
-                        (ketquad = item.dapan),
-                      )}
-                    />
-                    <Text
-                      style={{
-                        fontSize: Sizes.s40,
-                        marginTop: Sizes.s10,
-                        marginLeft: Sizes.s20,
-                      }}>
-                      {item.d}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            )}
-          />
-        </View>
-
-        <View style={{flex: 1 / 7}}>
-          <TouchableOpacity onPress={()=> this.nopbai()}>
+     }
+        <View style={{ flex: 1 / 7, backgroundColor: "#DDD" }}>
+          <TouchableOpacity onPress={() => this.nopbai()}>
             <View
               style={{
-                height: Sizes.s70,
                 marginHorizontal: Sizes.s40,
-                backgroundColor: '#f06c5b',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text style={{fontSize: Sizes.s40, color: '#FFFF'}}>NỘP BÀI</Text>
+                backgroundColor: "#f06c5b",
+                alignItems: "center",
+                borderRadius: Sizes.s10,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: Sizes.h38,
+                  color: "#FFFF",
+                  paddingVertical: Sizes.s20,
+                }}
+              >
+                NỘP BÀI
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -359,65 +529,68 @@ export default class BaiKiemTra extends React.Component {
     );
   }
 }
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFF',
+    backgroundColor: "#FFFF",
   },
   header: {
     height: Sizes.s200,
-    backgroundColor: '#f06c5b',
+    backgroundColor: "#f06c5b",
   },
   img: {
     width: Sizes.s260,
     height: Sizes.s260,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   labelContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 8,
     width: width - 50,
   },
   label: {
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   input: {
-    backgroundColor: 'rgba(224, 231, 255, 0.20)', // '#E0E7FF' 20%
+    backgroundColor: "rgba(224, 231, 255, 0.20)", // '#E0E7FF' 20%
     borderWidth: 0.5,
-    borderColor: '#4abf91',
+    borderColor: "#4abf91",
     borderRadius: 5,
     fontSize: 20,
-    color: '#2E384D',
+    color: "#2E384D",
     height: 45,
     paddingVertical: 11,
     paddingHorizontal: 16,
   },
   btn: {
     height: Sizes.s80,
-    backgroundColor: '#f06c5b',
+    backgroundColor: "#f06c5b",
     marginHorizontal: Sizes.s30,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: Sizes.s20,
   },
   textbtn: {
     fontSize: Sizes.s50,
-    color: '#FFFF',
+    color: "#FFFF",
+  },
+  dapan: {
+    width: "100%",
+    alignItems: "center",
   },
   wrapper: {
-    width: width - 20,
-    backgroundColor: '#edf7ff',
-    margin: 10,
-    shadowOffset: {width: 0, height: 3},
+    width: width - Sizes.s30,
+    backgroundColor: "#edf7ff",
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
-    padding: 10,
-    paddingTop: 0,
-    flexDirection: 'row',
+    marginVertical: Sizes.s10,
+    paddingVertical: 0,
+    flexDirection: "row",
   },
   title: {
-    fontSize: Sizes.s40,
+    fontSize: Sizes.h40,
     marginHorizontal: Sizes.s30,
     marginTop: Sizes.s10,
   },
@@ -425,4 +598,17 @@ const styles = StyleSheet.create({
     width: Sizes.s340 + Sizes.s200,
     height: Sizes.s340 + Sizes.s200,
   },
+  time: {
+    backgroundColor: '#FFF',
+    marginTop: Sizes.s20,
+    borderRadius: Sizes.s10,
+    borderColor: '#FF6600',
+    borderWidth: 1,
+},
+timeText: {
+    fontSize: Sizes.h40,
+    textAlign: 'center',
+    paddingVertical: Sizes.s10,
+    fontWeight: 'bold'
+},
 });

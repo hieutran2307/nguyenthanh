@@ -31,6 +31,11 @@ export default class GVDanhSachMonHoc extends React.Component {
     };
     this.GetData();
   }
+  componentDidUpdate(prevState) {
+    if (prevState.listmonhoc !== this.state.listmonhoc) {
+      this.GetData();
+    }
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(`${API_PUBLIC}/kiemtra/danhsachmonhocgv.php?idthanhvien=${userProfile.data.idthanhvien}`)
@@ -163,7 +168,7 @@ export default class GVDanhSachMonHoc extends React.Component {
                             marginHorizontal: Sizes.s30,
                           }}>
                           <TouchableOpacity
-                            onPress={() =>
+                            onPress={() => {
                               this.props.navigation.navigate(
                                 'GVThongTinMonHoc',
                                 {
@@ -173,7 +178,8 @@ export default class GVDanhSachMonHoc extends React.Component {
                                   sotiet: item.sotiet,
                                 },
                               )
-                            }>
+                              this[RBSheet + index].close()
+                            }}>
                             <View
                               style={{
                                 flexDirection: 'row',

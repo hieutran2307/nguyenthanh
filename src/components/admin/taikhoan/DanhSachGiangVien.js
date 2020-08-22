@@ -32,6 +32,11 @@ export default class DanhSachGiangVien extends React.Component {
     this.arrayholder = [];
      this.GetData();
   }
+  componentDidUpdate(prevState) {
+    if (prevState.danhsachgiangvien !== this.state.danhsachgiangvien) {
+      this.GetData();
+    }
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(`${API_PUBLIC}/kiemtra/danhsachgiangvien.php`)
@@ -162,7 +167,7 @@ export default class DanhSachGiangVien extends React.Component {
                         }}>
                         
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
                             this.props.navigation.navigate('TABThongTinGV', {
                               idgv:item.id,
                               ngaysinh:item.ngaysinh,
@@ -172,7 +177,8 @@ export default class DanhSachGiangVien extends React.Component {
                               tengv:item.name,
                               maso:item.maso
                             })
-                          }>
+                            this[RBSheet + index].close()
+                          }}>
                           <View
                             style={{
                               flexDirection: 'row',

@@ -33,7 +33,11 @@ export default class CapNhatLop extends React.Component {
       tenlop: value,
     });
   };
-
+  soluongChange = (value) => {
+    this.setState({
+      soluong: value,
+    });
+  };
   // gui du lieu len server
   async taomonhoc() {
     fetch(`${API_PUBLIC}/kiemtra/capnhatlophoc.php`, {
@@ -85,10 +89,22 @@ export default class CapNhatLop extends React.Component {
               onChangeText={(text) => this.tenlopChange(text)}
             />
           </View>
+          <View style={{marginTop: Sizes.s20}}>
+            <View style={styles.labelContainer}>
+              <Text caption medium style={styles.label}>
+                Số lượng
+              </Text>
+            </View>
+            <TextInput
+              style={styles.input}
+              value={this.state.soluong}
+              onChangeText={(text) => this.soluongChange(text)}
+            />
+          </View>
         </View>
         <View style={{marginBottom: Sizes.s60}}>
           <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
-            <Text style={styles.textbtn}>CẬP NHẠT</Text>
+            <Text style={styles.textbtn}>CẬP NHẬT</Text>
           </TouchableOpacity>
         </View>
       </View>

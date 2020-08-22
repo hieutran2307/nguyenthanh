@@ -27,6 +27,9 @@ export default class QuanLyBaiKiemTraTrangChu extends React.Component {
     this.state = {
       selectedIndex: 0,
       danhsachkiemtra: [],
+      tenbaikiemtra: this.props.navigation.getParam('tenbaikiemtra'),
+      makiemtra: this.props.navigation.getParam('makiemtra'),
+      thoigian: this.props.navigation.getParam('thoigian'),
     };
   }
   componentDidMount() {
@@ -42,7 +45,7 @@ export default class QuanLyBaiKiemTraTrangChu extends React.Component {
       });
   }
   render() {
-    const {navigation} = this.props;
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>

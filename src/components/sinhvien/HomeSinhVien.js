@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {SafeAreaView} from 'react-navigation';
 import {Sizes} from '@dungdang/react-native-basic';
@@ -17,84 +18,124 @@ import {/* userProfile,*/ serverpic} from '../../config/settings';
 
 export default class HomeSinhVien extends React.Component {
   render() {
-    return (   
-      <View style={{flex: 1}}>
+    return (
+      <SafeAreaView style={{flex: 1}}>
         <ImageBackground
-            style={{
-              width: '100%',
-              height: Sizes.s340 + Sizes.s160,
-              backgroundColor: '#4eb1a2',
-              borderRadius: Sizes.s40,
-            }}>
-            <Text
-              style={{
-                fontSize: Sizes.s40,
-                marginTop: Sizes.s100,
-                marginLeft: Sizes.s40,
-                color: '#FFFF',
-                fontWeight: 'bold',
-              }}>
-              XIN CHÀO SINH VIÊN
-            </Text>
-            <View style={styles.background}>
-              <Image
-                source={{
-                  uri: `${serverpic}/${userProfile.data.hinhanh}`,
-                }}
-                style={styles.avatar}
-              />
-              <View
+          style={{
+            width: '100%',
+            height: Sizes.s340 + Sizes.s160,
+            backgroundColor: '#4eb1a2',
+            borderBottomLeftRadius: Sizes.s40,
+            borderBottomRightRadius: Sizes.s40,
+          }}>
+          <View style={{flexDirection: 'row', padding: Sizes.s20}}>
+            <View style={{width: '80%'}}>
+              <Text
                 style={{
-                  flexDirection: 'column',
-                  marginTop: Sizes.s20,
-                  marginLeft: Sizes.s10,
+                  fontSize: Sizes.h40,
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  color: '#FFF',
                 }}>
-                <View style={{flexDirection: 'row'}}>
-                  <Image
-                    source={require('../../res/images/sinhviens.png')}
-                    style={styles.icon}
-                  />
-                  <Text
-                    style={{
-                      fontSize: Sizes.s30,
-                      marginTop: Sizes.s20,
-                      marginLeft: Sizes.s10,
-                    }}>
-                    {userProfile.data.hovaten}
-                  </Text>
-                </View>
-                <View style={{flexDirection: 'row'}}>
-                  <Image
-                    source={require('../../res/images/khoas.png')}
-                    style={styles.icon}
-                  />
-                  <Text
-                    style={{
-                      fontSize: Sizes.s30,
-                      marginTop: Sizes.s20,
-                      marginLeft: Sizes.s10,
-                    }}>
-                    {userProfile.data.khoa}
-                  </Text>
-                </View>
+                CAO ĐẲNG KỸ THUẬT CAO THẮNG
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                width: '20%',
+                alignItems: 'flex-end',
+              }}
+              onPress={() => {
+                Alert.alert('Thông báo ', 'Bạn có chắc muốn đăng xuất không?', [
+                  {
+                    text: 'Đóng',
+                    onPress: () => {
+                      return false;
+                    },
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Xác nhận',
+                    onPress: () => {
+                      userProfile.token = '';
+                      userProfile.user = '';
+                      userProfile.avatar = '';
+                      userProfile.noiDungFileMaHoa = '';
+                      this.props.navigation.navigate('Login');
+                    },
+                    style: 'cancel',
+                  },
+                ]);
+              }}>
+              <Image
+                source={require('../../res/images/ic_logout.png')}
+                style={{
+                  height: Sizes.s100,
+                  width: Sizes.s100,
+                  resizeMode: 'contain',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.background}>
+            <Image
+              source={{
+                uri: `${serverpic}/${userProfile.data.hinhanh}`,
+              }}
+              style={styles.avatar}
+            />
+            <View
+              style={{
+                flexDirection: 'column',
+                marginTop: Sizes.s20,
+                marginLeft: Sizes.s10,
+              }}>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  source={require('../../res/images/sinhviens.png')}
+                  style={styles.icon}
+                />
+                <Text
+                  style={{
+                    fontSize: Sizes.s30,
+                    marginTop: Sizes.s20,
+                    marginLeft: Sizes.s10,
+                  }}>
+                  {userProfile.data.hovaten}
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  source={require('../../res/images/khoas.png')}
+                  style={styles.icon}
+                />
+                <Text
+                  style={{
+                    fontSize: Sizes.s30,
+                    marginTop: Sizes.s20,
+                    marginLeft: Sizes.s10,
+                  }}>
+                  {userProfile.data.khoa}
+                </Text>
+              </View>
 
-                <View style={{flexDirection: 'row'}}>
-                  <Image
-                    source={require('../../res/images/lops.png')}
-                    style={styles.icon}
-                  />
-                  <Text
-                    style={{
-                      fontSize: Sizes.s30,
-                      marginTop: Sizes.s20,
-                      marginLeft: Sizes.s10,
-                    }}>
-                    {userProfile.data.lophoc}
-                  </Text>
-                </View>
+              <View style={{flexDirection: 'row'}}>
+                <Image
+                  source={require('../../res/images/lops.png')}
+                  style={styles.icon}
+                />
+                <Text
+                  style={{
+                    fontSize: Sizes.s30,
+                    marginTop: Sizes.s20,
+                    marginLeft: Sizes.s10,
+                  }}>
+                  {userProfile.data.lophoc}
+                </Text>
               </View>
             </View>
-            {/* <Image
+          </View>
+          {/* <Image
               source={{
                 uri: `${serverpic}/${userProfile.data.hinhanh}`,
               }}
@@ -105,9 +146,9 @@ export default class HomeSinhVien extends React.Component {
                 ssss
                 </Text>
               </View> */}
-          </ImageBackground>
+        </ImageBackground>
         <ScrollView style={styles.container}>
-             {/* <View style={styles.fullField}>
+          {/* <View style={styles.fullField}>
              <View style={styles.colMainLeft}>
                <TouchableOpacity
                 onPress={() => this.props.navigation.navigate('KiemTraCode')}>
@@ -150,58 +191,59 @@ export default class HomeSinhVien extends React.Component {
               </TouchableOpacity>
             </View>
             </View> */}
-            <View style={{marginTop:Sizes.s40, marginHorizontal:Sizes.s40}}>
-            <Text style={{fontSize:Sizes.s40}}>
+          <View style={{marginTop: Sizes.s40, marginHorizontal: Sizes.s40}}>
+            <Text style={{fontSize: Sizes.s40}}>
               Vui lòng chọn các tính năng
-              </Text> 
-              <View style={styles.fullField}>
-             <View style={styles.colMainLeft}>
-               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('KiemTraCode')}>
-                <View
-                  colors={['rgb(150,150,150)', 'rgb(105,105,105)']}
-                  style={styles.boxMain}>
+            </Text>
+            <View style={styles.fullField}>
+              <View style={styles.colMainLeft}>
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('KiemTraCode')}>
                   <View
-                    style={[
-                      styles.highLightBoxMain,
-                      {backgroundColor: '#f06955'},
-                    ]}>
-                    <View style={styles.viewIonChucNang}>
-                      <Image
-                        source={require('../../res/images/quizs.png')}
-                        style={styles.imageBoxChucNang}
-                      />
+                    colors={['rgb(150,150,150)', 'rgb(105,105,105)']}
+                    style={styles.boxMain}>
+                    <View
+                      style={[
+                        styles.highLightBoxMain,
+                        {backgroundColor: '#f06955'},
+                      ]}>
+                      <View style={styles.viewIonChucNang}>
+                        <Image
+                          source={require('../../res/images/quizs.png')}
+                          style={styles.imageBoxChucNang}
+                        />
+                      </View>
+                      <Text style={styles.textchucnang}>Kiểm tra</Text>
                     </View>
-                    <Text style={styles.textchucnang}>Kiểm tra</Text>
                   </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.colMainRight}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate('DanhSachBaiThi')}>
-                <View
-                  colors={['rgb(150,150,150)', 'rgb(105,105,105)']}
-                  style={styles.boxMain}>
-                  <View
-                    backgroundColor="#58cba7"
-                    style={styles.highLightBoxMain}>
-                    <View style={styles.viewIonChucNang}>
-                      <Image
-                        source={require('../../res/images/rank.png')}
-                        style={styles.imageBoxChucNang}
-                      />
-                    </View>
-                    <Text style={styles.textchucnang}> Điểm kiểm tra </Text>
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </View>
-            </View>
+                </TouchableOpacity>
               </View>
-
+              <View style={styles.colMainRight}>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.navigate('DanhSachBaiThi')
+                  }>
+                  <View
+                    colors={['rgb(150,150,150)', 'rgb(105,105,105)']}
+                    style={styles.boxMain}>
+                    <View
+                      backgroundColor="#58cba7"
+                      style={styles.highLightBoxMain}>
+                      <View style={styles.viewIonChucNang}>
+                        <Image
+                          source={require('../../res/images/rank.png')}
+                          style={styles.imageBoxChucNang}
+                        />
+                      </View>
+                      <Text style={styles.textchucnang}> Điểm kiểm tra </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         </ScrollView>
-      </View>
-    
+      </SafeAreaView>
     );
   }
 }

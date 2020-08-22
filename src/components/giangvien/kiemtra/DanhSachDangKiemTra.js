@@ -24,21 +24,29 @@ export default class DanhSachDangKiemTra extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 1,
+      selectedIndex: 0,
       danhsachkiemtra: [],
     };
   }
   componentDidMount() {
-    fetch(`${API_PUBLIC}/kiemtra/tranthaibaikiemtra.php?idtrangthaikiemtra=2`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          danhsachkiemtra: responseJson,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
+    this.GetData()
+  }
+  componentDidUpdate(prevState){
+    if(prevState.danhsachkiemtra !== this.state.danhsachkiemtra){
+      this.GetData()
+    }
+  }
+  GetData = () => {
+    return fetch(`${API_PUBLIC}/kiemtra/tranthaibaikiemtra.php?idtrangthaikiemtra=2`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        danhsachkiemtra: responseJson,
       });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
   render() {
     const {navigation} = this.props;
@@ -52,7 +60,13 @@ export default class DanhSachDangKiemTra extends React.Component {
           refreshing={this.state.danhsachkiemtra}
           extraData={this.state.danhsachkiemtra}
           renderItem={({item, index}) => (
-            <View style={styles.wrapper}>
+            <TouchableOpacity onPress={()=> navigation.navigate('QuanLyBaiKiemTraTrangChu',{
+              idkiemtra:item.idkiemtra,
+              tenbaikiemtra:item.tenbaikiemtra,
+              makiemtra:item.makiemtra,
+              thoigian:item.thoigian,
+            })}>
+              <View style={styles.wrapper}>
               <View style={{flex: 1}}>
                 <View style={{marginRight: Sizes.s50, flexDirection: 'row'}}>
                   <UserAvatar
@@ -74,6 +88,7 @@ export default class DanhSachDangKiemTra extends React.Component {
                 </View>
               </View>
             </View>
+       </TouchableOpacity>
           )}
         />
       </View>

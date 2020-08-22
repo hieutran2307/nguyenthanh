@@ -20,7 +20,9 @@ export default class TuyChonTaiKhoan extends Component {
             <Text style={{fontSize: Sizes.s40}}>Quản lý tài khoản</Text>
             <Block center style={{marginTop: Sizes.s60}}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('DanhSachGiangVien')}>
+                onPress={() =>
+                  this.props.navigation.navigate('DanhSachGiangVien')
+                }>
                 <View style={styles.wrapper}>
                   <View style={styles.bgicon}>
                     <Image
@@ -32,16 +34,36 @@ export default class TuyChonTaiKhoan extends Component {
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('DanhSachSinhVien')}>
-              <View style={styles.wrapper}>
-                <View style={styles.bgicon}>
-                  <Image
-                    source={require('../../../res/images/sinhvien.png')}
-                    style={styles.icon}
-                  />
+                onPress={() =>
+                  this.props.navigation.navigate('DanhSachSinhVien')
+                }>
+                <View style={styles.wrapper}>
+                  <View style={styles.bgicon}>
+                    <Image
+                      source={require('../../../res/images/sinhvien.png')}
+                      style={styles.icon}
+                    />
+                  </View>
+                  <Text style={styles.text}>Sinh viên</Text>
                 </View>
-                <Text style={styles.text}>Sinh viên</Text>
-              </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.goBack('');
+                }}
+                style={{
+                  backgroundColor: '#616161',
+                  padding: Sizes.s20,
+                  borderRadius: Sizes.s100,
+                }}>
+                <Image
+                  source={require('../../../res/images/arrow_left_white.png')}
+                  style={{
+                    width: Sizes.s100,
+                    height: Sizes.s100,
+                    resizeMode: 'contain',
+                  }}
+                />
               </TouchableOpacity>
             </Block>
           </Block>

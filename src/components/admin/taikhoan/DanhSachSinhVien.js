@@ -32,6 +32,11 @@ export default class DanhSachSinhVien  extends React.Component {
     this.arrayholder = [];
      this.GetData();
   }
+  componentDidUpdate(prevState) {
+    if (prevState.DanhSachSinhVien !== this.state.DanhSachSinhVien) {
+      this.GetData();
+    }
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(`${API_PUBLIC}/kiemtra/danhsachsinhvien.php`)
@@ -131,17 +136,7 @@ export default class DanhSachSinhVien  extends React.Component {
                   </View>
                 </View>
                 <View>
-                  <TouchableOpacity
-                    onPress={() => this[RBSheet + index].open()}>
-                    <Image
-                      source={require('../../../res/images/ic_private_edit.png')}
-                      style={{
-                        height: Sizes.s70,
-                        width: Sizes.s70,
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </TouchableOpacity>
+                  
                   {/* bottom sheet */}
                   <View>
                     <RBSheet
@@ -162,7 +157,7 @@ export default class DanhSachSinhVien  extends React.Component {
                         }}>
                         
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
                             this.props.navigation.navigate('TABThongTinGV', {
                               idgv:item.id,
                               ngaysinh:item.ngaysinh,
@@ -172,7 +167,8 @@ export default class DanhSachSinhVien  extends React.Component {
                               tengv:item.name,
                               maso:item.maso
                             })
-                          }>
+                            this[RBSheet + index].close()
+                          }}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -192,7 +188,7 @@ export default class DanhSachSinhVien  extends React.Component {
                                 marginLeft: Sizes.s10,
                                 fontSize: Sizes.s40,
                               }}>
-                              Thông tin giảng viên
+                              Thông tin sinh viên
                             </Text>
                           </View>
                         </TouchableOpacity>

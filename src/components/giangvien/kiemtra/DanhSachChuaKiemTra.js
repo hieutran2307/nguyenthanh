@@ -29,16 +29,24 @@ export default class DanhSachChuaKiemTra extends React.Component {
     };
   }
   componentDidMount() {
-    fetch(`${API_PUBLIC}/kiemtra/tranthaibaikiemtra.php?idtrangthaikiemtra=1`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          danhsachkiemtra: responseJson,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
+    this.GetData()
+  }
+  componentDidUpdate(prevState){
+    if(prevState.danhsachkiemtra !== this.state.danhsachkiemtra){
+      this.GetData()
+    }
+  }
+  GetData = () => {
+    return fetch(`${API_PUBLIC}/kiemtra/tranthaibaikiemtra.php?idtrangthaikiemtra=1`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        danhsachkiemtra: responseJson,
       });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
   render() {
     const {navigation} = this.props;
@@ -53,7 +61,10 @@ export default class DanhSachChuaKiemTra extends React.Component {
           extraData={this.state.danhsachkiemtra}
           renderItem={({item, index}) => (
             <TouchableOpacity onPress={()=> navigation.navigate('QuanLyBaiKiemTraTrangChu',{
-              idkiemtra:item.idkiemtra
+              idkiemtra:item.idkiemtra,
+              tenbaikiemtra:item.tenbaikiemtra,
+              makiemtra:item.makiemtra,
+              thoigian:item.thoigian,
             })}>
               <View style={styles.wrapper}>
               <View style={{flex: 1}}>

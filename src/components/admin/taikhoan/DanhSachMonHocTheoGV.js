@@ -27,6 +27,9 @@ export default class DanhSachMonHocTheoGV extends React.Component {
     };
     this.GetData();
   }
+  componentDidUpdate(prevState) {
+    this.GetData();
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(
@@ -77,7 +80,7 @@ export default class DanhSachMonHocTheoGV extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Danh sách môn học"
+            title="Danh sách môn học "
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}

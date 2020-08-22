@@ -31,16 +31,24 @@ export default class GVDanhSachChuDe extends React.Component {
     
   }
   componentDidMount() {
-    fetch(`${API_PUBLIC}/kiemtra/chude.php?idmonhoc=${this.state.idmonhoc}`)
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          listkhoahoc: responseJson,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
+    this.GetData()
+  }
+  componentDidUpdate(prevState){
+    if(prevState.listkhoahoc !== this.state.listkhoahoc){
+      this.GetData()
+    }
+  }
+  GetData = () =>{
+    return fetch(`${API_PUBLIC}/kiemtra/chude.php?idmonhoc=${this.state.idmonhoc}`)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({
+        listkhoahoc: responseJson,
       });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   }
   togglePanel() {
     this.setState({
@@ -101,7 +109,22 @@ export default class GVDanhSachChuDe extends React.Component {
                         name={item.tenchude}
                         bgColors={['#3498db', '#34495e', '#e67e22']}
                       />
-                      <Text style={styles.title}>Môn học: {item.tenchude}</Text>
+                      <View>
+                      <Text style={[styles.title, {fontSize: Sizes.h40}]}>
+                        Chủ đề
+                      </Text>
+                      <Text
+                        style={[
+                          styles.title,
+                          {
+                            fontSize: Sizes.h36,
+                            fontWeight: 'bold',
+                            color: '#335272',
+                          },
+                        ]}>
+                        {item.tenchude}
+                      </Text>
+                    </View>
                     </View>
                   </View>
                 </View>

@@ -24,26 +24,37 @@ export default class DanhSachSinhVIenLopHocPhan extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        idlop: this.props.navigation.getParam('idlop'),
-        idlophocphan: this.props.navigation.getParam('idlophocphan'),
+      idlop: this.props.navigation.getParam('idlop'),
+      idlophocphan: this.props.navigation.getParam('idlophocphan'),
       danhsachlop: [],
     };
   }
-  componentDidMount() {
-    fetch(`${API_PUBLIC}/kiemtra/danhsachsinhvientheolophp.php?idlop=${this.state.idlop}&idlophocphan=${this.state.idlophocphan}`)
+  GetData = () => {
+    //Service to get the data from the server to render
+    return fetch(
+      `${API_PUBLIC}/kiemtra/danhsachsinhvientheolophp.php?idlop=${this.state.idlop}&idlophocphan=${this.state.idlophocphan}`,
+    )
       .then((response) => response.json())
       .then((responseJson) => {
         this.setState({
-            danhsachlop: responseJson,
+          danhsachlop: responseJson,
         });
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+  componentDidMount(){
+    this.GetData();
+  }
+  componentDidUpdate(prevState) {
+    if (prevState.danhsachlop !== this.state.danhsachlop) {
+      this.GetData();
+    }
   }
   render() {
     const {navigation} = this.props;
-    console.log("id lop", this.state.idlop)
+    console.log('id lop', this.state.idlop);
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -53,9 +64,9 @@ export default class DanhSachSinhVIenLopHocPhan extends React.Component {
               this.props.navigation.goBack('');
             }}
             onPressShowMenu={() => {
-              this.props.navigation.navigate('ThemSVLopHocPhan',{
-                idlop:this.state.idlop,
-                idlophocphan:this.state.idlophocphan
+              this.props.navigation.navigate('ThemSVLopHocPhan', {
+                idlop: this.state.idlop,
+                idlophocphan: this.state.idlophocphan,
               });
             }}
           />
@@ -79,8 +90,6 @@ export default class DanhSachSinhVIenLopHocPhan extends React.Component {
                     <Text style={styles.title}>{item.hovaten}</Text>
                   </View>
                 </View>
-
-           
               </View>
             )}
           />

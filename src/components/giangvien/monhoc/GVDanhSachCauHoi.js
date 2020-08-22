@@ -30,6 +30,11 @@ export default class GVDanhSachCauHoi extends React.Component {
     };
     this.GetData();
   }
+  componentDidUpdate(prevState){
+    if(prevState.danhsachcauhoi !== this.state.danhsachcauhoi){
+      this.GetData()
+    }
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(

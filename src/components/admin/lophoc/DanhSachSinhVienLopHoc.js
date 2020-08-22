@@ -19,24 +19,30 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        idlop: this.props.navigation.getParam('idlop'),
-        dataSource:'',
+      idlop: this.props.navigation.getParam('idlop'),
+      dataSource: '',
       refreshing: false,
     };
     this.GetData();
   }
+  componentDidUpdate(prevState) {
+    if (prevState.dataSource !== this.state.dataSource) {
+      this.GetData();
+    }
+  }
   GetData = () => {
     //Service to get the data from the server to render
-    fetch(`${API_PUBLIC}/kiemtra/danhsachsinhvientheolop.php?idlop=${this.state.idlop}`)
-
-      .then(response => response.json())
-      .then(responseJson => {
+    fetch(
+      `${API_PUBLIC}/kiemtra/danhsachsinhvientheolop.php?idlop=${this.state.idlop}`,
+    )
+      .then((response) => response.json())
+      .then((responseJson) => {
         this.setState({
           refreshing: false,
-          dataSource: responseJson
+          dataSource: responseJson,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   };
@@ -52,14 +58,14 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
     );
   };
   onRefresh() {
-    this.setState({ dataSource: [] });
+    this.setState({dataSource: []});
     this.GetData();
   }
   render() {
-  console.log("id lop ben danh sach lop", this.state.idlop)
+    console.log('id lop ben danh sach lop', this.state.idlop);
     if (this.state.refreshing) {
       return (
-        <View style={{ flex: 1, paddingTop: 20 }}>
+        <View style={{flex: 1, paddingTop: 20}}>
           <ActivityIndicator />
         </View>
       );
@@ -73,8 +79,8 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
               this.props.navigation.goBack('');
             }}
             onPressShowMenu={() => {
-              this.props.navigation.navigate('ThemSVLop',{
-                idlop:this.state.idlop
+              this.props.navigation.navigate('ThemSVLop', {
+                idlop: this.state.idlop,
               });
             }}
           />
@@ -83,8 +89,8 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
           <FlatList
             style={styles.container}
             data={this.state.dataSource}
-          ItemSeparatorComponent={this.ListViewItemSeparator}
-          enableEmptySections={true}
+            ItemSeparatorComponent={this.ListViewItemSeparator}
+            enableEmptySections={true}
             renderItem={({item, index}) => (
               <View style={styles.wrapper}>
                 <View style={{flex: 1}}>
@@ -94,11 +100,12 @@ export default class DanhSachSinhVienLopHoc extends React.Component {
                       name={item.hovaten}
                       bgColors={['#3498db', '#34495e', '#e67e22']}
                     />
-                    <Text style={styles.title}>{item.hovaten}</Text>
+                    <View>
+                      <Text style={styles.title}>{item.maso}</Text>
+                      <Text style={styles.title}>{item.hovaten}</Text>
+                    </View>
                   </View>
                 </View>
-
-           
               </View>
             )}
             refreshControl={

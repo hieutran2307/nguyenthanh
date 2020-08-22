@@ -124,7 +124,7 @@ export default class CapNhatMonHoc extends React.Component {
         </View>
         <View style={{marginBottom: Sizes.s60}}>
           <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
-            <Text style={styles.textbtn}>CẬP NHẠT</Text>
+            <Text style={styles.textbtn}>CẬP NHẬT</Text>
           </TouchableOpacity>
         </View>
       </View>

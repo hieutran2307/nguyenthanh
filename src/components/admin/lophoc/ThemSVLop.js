@@ -18,46 +18,49 @@ import Headers from '../../custom/Headers';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {/* userProfile,*/ API_PUBLIC} from '../../../config/settings';
 import UserAvatar from 'react-native-user-avatar';
-import { CheckBox, SearchBar } from 'react-native-elements';
+import {CheckBox, SearchBar} from 'react-native-elements';
 
 export default class ThemSVLop extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       idlop: this.props.navigation.getParam('idlop'),
-        loading: false,
-        data: [],
-        checked: [],
-        arrayDetail:[]
+      loading: false,
+      data: [],
+      checked: [],
+      arrayDetail: [],
     };
     this.arrayholder = [];
   }
-  checkItem = item => {
-    const { checked } = this.state;
+  checkItem = (item) => {
+    const {checked} = this.state;
 
     if (!checked.includes(item)) {
-      this.setState({ checked: [...checked, item],
-            arrayDetail: [{
-          ...checked,
-          "idlop":this.state.idlop,
-          "idthanhvien":item
-        }]
+      this.setState({
+        checked: [...checked, item],
+        arrayDetail: [
+          {
+            ...checked,
+            idlop: this.state.idlop,
+            idthanhvien: item,
+          },
+        ],
       });
     } else {
-      this.setState({ checked: checked.filter(a => a !== item) });
+      this.setState({checked: checked.filter((a) => a !== item)});
     }
-};
+  };
   componentDidMount() {
     this.getData();
   }
   getData = () => {
     const url = `${API_PUBLIC}/kiemtra/danhsachallsinhvien.php`;
-    this.setState({ loading: true });
+    this.setState({loading: true});
 
     fetch(url)
       .then((res) => res.json())
       .then((res) => {
-          console.log("dddd", res)
+        console.log('dddd', res);
         this.setState({
           data: res,
           error: res.error || null,
@@ -66,7 +69,7 @@ export default class ThemSVLop extends React.Component {
         this.arrayholder = res;
       })
       .catch((error) => {
-        this.setState({ error, loading: false });
+        this.setState({error, loading: false});
       });
   };
   searchFilterFunction = (text) => {
@@ -92,7 +95,7 @@ export default class ThemSVLop extends React.Component {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        arrayDetail: this.state.arrayDetail
+        arrayDetail: this.state.arrayDetail,
       }),
     })
       .then((response) => response.json())
@@ -117,15 +120,15 @@ export default class ThemSVLop extends React.Component {
           />
         </View>
         <View style={{flex: 1}}>
-        <SearchBar
-                        containerStyle={styles.search}
-                        placeholder="Nhập tên hay mã số sinh viên...."
-                        lightTheme
-                        round
-                        onChangeText={text => this.searchFilterFunction(text)}
-                        autoCorrect={false}
-                        value={this.state.value}
-                    />
+          <SearchBar
+            containerStyle={styles.search}
+            placeholder="Nhập tên hay mã số sinh viên...."
+            lightTheme
+            round
+            onChangeText={(text) => this.searchFilterFunction(text)}
+            autoCorrect={false}
+            value={this.state.value}
+          />
           <FlatList
             style={styles.container}
             showsVerticalScrollIndicator={false}
@@ -141,28 +144,27 @@ export default class ThemSVLop extends React.Component {
                       name={item.hovaten}
                       bgColors={['#3498db', '#34495e', '#e67e22']}
                     />
-                    <Text style={styles.title}>{item.hovaten}</Text>
+                    <View style={{flexflexDirection: 'row'}}>
+                      <Text style={styles.title}>{item.maso}</Text>
+                      <Text style={styles.title}>{item.hovaten}</Text>
+                    </View>
                   </View>
                 </View>
                 <View>
-                <CheckBox
-                            
-                            onPress={() => this.checkItem(item.idthanhvien)}
-                            checked={this.state.checked.includes(item.idthanhvien)}
-                            />
-                  </View>
-
+                  <CheckBox
+                    onPress={() => this.checkItem(item.idthanhvien)}
+                    checked={this.state.checked.includes(item.idthanhvien)}
+                  />
+                </View>
               </View>
-             
             )}
           />
         </View>
-        <View style={{  flex:1/9}}>
-        <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
+        <View style={{flex: 1 / 9}}>
+          <TouchableOpacity style={styles.btn} onPress={() => this.taomonhoc()}>
             <Text style={styles.textbtn}>CẬP NHẬT</Text>
           </TouchableOpacity>
-
-</View>
+        </View>
       </View>
     );
   }
@@ -192,22 +194,22 @@ const styles = StyleSheet.create({
     marginHorizontal: Sizes.s30,
     marginTop: Sizes.s10,
   },
-    search: {
-        marginTop: Sizes.s10,
-        backgroundColor: '#FFFF',
-        borderBottomColor: '#FFFF',
-        borderTopColor: '#FFFF',
-    },
-    btn: {
-      height: Sizes.s80,
-      backgroundColor: '#f06c5b',
-      marginHorizontal: Sizes.s30,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: Sizes.s20,
-    },
-    textbtn: {
-      fontSize: Sizes.s50,
-      color: '#FFFF',
-    },
+  search: {
+    marginTop: Sizes.s10,
+    backgroundColor: '#FFFF',
+    borderBottomColor: '#FFFF',
+    borderTopColor: '#FFFF',
+  },
+  btn: {
+    height: Sizes.s80,
+    backgroundColor: '#f06c5b',
+    marginHorizontal: Sizes.s30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: Sizes.s20,
+  },
+  textbtn: {
+    fontSize: Sizes.s50,
+    color: '#FFFF',
+  },
 });

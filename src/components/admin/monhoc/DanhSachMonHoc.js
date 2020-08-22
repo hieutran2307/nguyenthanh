@@ -29,6 +29,11 @@ export default class DanhSachMonHoc extends React.Component {
     };
     this.GetData();
   }
+  componentDidUpdate(prevState) {
+    if (prevState.listkhoahoc !== this.state.listkhoahoc) {
+      this.GetData();
+    }
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(`${API_PUBLIC}/kiemtra/danhsachmonhoc.php`)
@@ -95,7 +100,22 @@ export default class DanhSachMonHoc extends React.Component {
                       name={item.tenmonhoc}
                       bgColors={['#3498db', '#34495e', '#e67e22']}
                     />
-                    <Text style={styles.title}>Môn học: {item.tenmonhoc}</Text>
+                    <View>
+                      <Text style={[styles.title, {fontSize: Sizes.h40}]}>
+                        Môn học:
+                      </Text>
+                      <Text
+                        style={[
+                          styles.title,
+                          {
+                            fontSize: Sizes.h36,
+                            fontWeight: 'bold',
+                            color: '#335272',
+                          },
+                        ]}>
+                        {item.tenmonhoc}
+                      </Text>
+                    </View>
                   </View>
                 </View>
 
@@ -135,14 +155,15 @@ export default class DanhSachMonHoc extends React.Component {
                           marginHorizontal: Sizes.s30,
                         }}>
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
                             this.props.navigation.navigate('CapNhatMonHoc', {
                               idmonhoc: item.idmonhoc,
                               tenmonhoc: item.tenmonhoc,
                               sotinchi: item.sotinchi,
                               sotiet: item.sotiet,
-                            })
-                          }>
+                            });
+                            this[RBSheet + index].close();
+                          }}>
                           <View style={{flexDirection: 'row'}}>
                             <Image
                               source={require('../../../res/images/edits.png')}
@@ -164,14 +185,15 @@ export default class DanhSachMonHoc extends React.Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
                             this.props.navigation.navigate('ThongTinMonHoc', {
                               idmonhoc: item.idmonhoc,
                               tenmonhoc: item.tenmonhoc,
                               sotinchi: item.sotinchi,
                               sotiet: item.sotiet,
-                            })
-                          }>
+                            });
+                            this[RBSheet + index].close();
+                          }}>
                           <View
                             style={{
                               flexDirection: 'row',

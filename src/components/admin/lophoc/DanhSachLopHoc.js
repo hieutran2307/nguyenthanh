@@ -30,6 +30,11 @@ export default class DanhSachLopHoc extends React.Component {
     };
     this.GetData();
   }
+  componentDidUpdate(prevState) {
+    if (prevState.danhsachlophoc !== this.state.danhsachlophoc) {
+      this.GetData();
+    }
+  }
   GetData = () => {
     //Service to get the data from the server to render
     return fetch(`${API_PUBLIC}/kiemtra/danhsachlop.php`)
@@ -96,7 +101,22 @@ export default class DanhSachLopHoc extends React.Component {
                       name={item.tenmonhoc}
                       bgColors={['#3498db', '#34495e', '#e67e22']}
                     />
-                    <Text style={styles.title}>Lớp: {item.tenlop}</Text>
+                    <View>
+                      <Text style={[styles.title, {fontSize: Sizes.h40}]}>
+                        Lớp học:
+                      </Text>
+                      <Text
+                        style={[
+                          styles.title,
+                          {
+                            fontSize: Sizes.h36,
+                            fontWeight: 'bold',
+                            color: '#335272',
+                          },
+                        ]}>
+                        {item.tenlop}
+                      </Text>
+                    </View>
                   </View>
                 </View>
 
@@ -131,13 +151,14 @@ export default class DanhSachLopHoc extends React.Component {
                           marginHorizontal: Sizes.s30,
                         }}>
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
                             this.props.navigation.navigate('CapNhatLop', {
                               idlop: item.idlop,
                               tenlop: item.tenlop,
                               soluongsinhvien: item.soluongsinhvien,
                             })
-                          }>
+                            this[RBSheet + index].close()
+                          }}>
                           <View style={{flexDirection: 'row'}}>
                             <Image
                               source={require('../../../res/images/edits.png')}
@@ -159,13 +180,14 @@ export default class DanhSachLopHoc extends React.Component {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                          onPress={() =>
+                          onPress={() => {
                             this.props.navigation.navigate('TABLopHoc', {
                               idlop: item.idlop,
                               tenlop: item.tenlop,
                               soluongsinhvien: item.soluongsinhvien,
                             })
-                          }>
+                            this[RBSheet + index].close()
+                          }}>
                           <View
                             style={{
                               flexDirection: 'row',

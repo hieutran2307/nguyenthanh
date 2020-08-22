@@ -39,7 +39,7 @@ export default class QuanLyBaiKiemTra extends React.Component {
               this.props.navigation.goBack('');
             }}
             onPressShowMenu={() => {
-              this.props.navigation.navigate('ThemLopHoc');
+              this.props.navigation.navigate('ThemBaiKiemTra');
             }}
           />
         </View>

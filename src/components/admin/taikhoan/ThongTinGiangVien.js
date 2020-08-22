@@ -40,7 +40,7 @@ export default class ThongTinGiangVien extends React.Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <Headers
-            title="Thông tin giảng viên"
+            title="Thông tin"
             onPressBackButton={() => {
               this.props.navigation.goBack('');
             }}

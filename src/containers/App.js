@@ -76,6 +76,8 @@ import QuanLyThongTinThongKe from '../components/giangvien/kiemtra/QuanLyBaiKiem
 import HomeAdmin from '../components/admin/HomeAdmin';
 import ThongBao from '../components/admin/thongbao/ThongBao';
 import ThongTinTaiKhoan from '../components/admin/thongtintaikhoan/ThongTinTaiKhoan';
+import ThemBaiKiemTra from '../components/giangvien/kiemtra/ThemBaiKiemTra';
+import BatDauThi from '../components/giangvien/kiemtra/BatDauThi';
 
 // tab admin
 const TabNavigatorAdmin = createBottomTabNavigator(
@@ -448,6 +450,69 @@ const TabThongTinGiangVien = createBottomTabNavigator(
 );
 const TABThongTinGV = createAppContainer(TabThongTinGiangVien)
 
+
+/// tab thong ke bai kiem tra
+const TabNavigatorThongkebaikiemtra = createBottomTabNavigator(
+  {
+    
+    HomeAppThongtinMonHocGV: {
+      screen: QuanLyBaiKiemTraTrangChu,
+      navigationOptions: {
+        tabBarLabel: "Tổng quan",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+                source={require("../res/images/tongquan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/tongquan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+ 
+    ChuDe: {
+      screen: BatDauThi,
+      navigationOptions: {
+        tabBarLabel: "Bắt đầu làm bài",
+        tabBarIcon: ({ focused }) => (
+          <>
+            {focused ? (
+              <Image
+              source={require("../res/images/hocphan_2.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            ) : (
+              <Image
+              source={require("../res/images/hocphan_1.png")}
+                style={{ width: 20, height: 20 }}
+              />
+            )}
+          </>
+        ),
+      },
+    },
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: "#4390DF",
+      inactiveTintColor: "#707070",
+      style: {
+        paddingTop: 11,
+        paddingBottom: 10,
+        height: 63,
+      },
+    },
+  }
+);
+const TABthongkekiemtra = createAppContainer(TabNavigatorThongkebaikiemtra);
+
 // stack
 const RootStack = createStackNavigator(
   {
@@ -546,6 +611,9 @@ HomeAdmin:{
   ThemMonHocGV:{
     screen:ThemMonHocGV
   },
+  ThemBaiKiemTra:{
+    screen:ThemBaiKiemTra
+  },
 
   //=========== chuc nang admin end
     
@@ -607,7 +675,7 @@ HomeAdmin:{
   },
 
   QuanLyBaiKiemTraTrangChu:{
-    screen:QuanLyBaiKiemTraTrangChu
+    screen:TABthongkekiemtra
   },
   QuanLyThongTinThongKe:{
     screen:QuanLyThongTinThongKe
